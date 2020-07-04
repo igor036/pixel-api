@@ -35,8 +35,8 @@ public class ManipulateServiceDataProvider {
 
         MultipartFile img = getMultipartFileTest();
         Region undefined = null;
-        Region invalidX = new Region(2, 20, 20, 20);
-        Region invalidY = new Region(20, 2, 20, 20);
+        Region invalidX = new Region(-1, 20, 20, 20);
+        Region invalidY = new Region(20, -1, 20, 20);
         Region invaidWidth = new Region(20, 20, 2, 20);
         Region invalidheight = new Region(20, 20, 20, 2);
  
