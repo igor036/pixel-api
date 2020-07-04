@@ -36,13 +36,32 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-    
+    <dependency>
+		<groupId>org.mockito</groupId>
+		<artifactId>mockito-all</artifactId>
+		<version>1.10.19</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.testng</groupId>
+		<artifactId>testng</artifactId>
+		<version>6.8.5</version>
+	</dependency>
+
     <!-- opencv -->
     <dependency>
         <groupId>org.openpnp</groupId>
         <artifactId>opencv</artifactId>
         <version>3.4.2-0</version>
     </dependency>
+
+	<!-- io-->
+	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>2.6</version>
+	</dependency>
+
 
   </dependencies>
 
@@ -73,6 +92,10 @@
 		<resources>
 			<resource>
 		       <directory>src/main/resources</directory>
+		       <filtering>true</filtering>
+		     </resource>
+			 <resource>
+		       <directory>src/test/resources</directory>
 		       <filtering>true</filtering>
 		     </resource>
         </resources>
