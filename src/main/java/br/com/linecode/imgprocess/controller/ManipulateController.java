@@ -22,7 +22,7 @@ public class ManipulateController {
 	
 	@Autowired
 	private ManipulateService manipulateService;
-	
+
 	@GetMapping("resize")
 	public void resize(@RequestPart MultipartFile file,  Dimenssion dimenssion, HttpServletResponse response) throws IOException {	
 		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.resize(file, dimenssion), response);

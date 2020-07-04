@@ -6,7 +6,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
+import org.opencv.imgcodecs.Imgcodecs; 
 import org.opencv.imgproc.Imgproc;
 
 import br.com.linecode.imgprocess.model.Dimenssion;
@@ -70,7 +70,7 @@ public abstract class ImageUtil {
 	 *  @throws IOException
 	 */
 	private static Mat getMat(byte[] blobImage) throws IOException {
-		return Highgui.imdecode(new MatOfByte(blobImage), Highgui.CV_LOAD_IMAGE_UNCHANGED);
+		return Imgcodecs.imdecode(new MatOfByte(blobImage), Imgcodecs.IMREAD_UNCHANGED);
 	}
 	
 	/**
@@ -87,7 +87,7 @@ public abstract class ImageUtil {
 	private static byte[] getBlob(Mat image, String extension) {
 		
 		MatOfByte bytes = new MatOfByte();
-		Highgui.imencode(".".concat(extension), image, bytes);
+		Imgcodecs.imencode(".".concat(extension), image, bytes);
 		
 		return bytes.toArray();
 	}

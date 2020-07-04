@@ -28,6 +28,8 @@ public class ExceptionHandlerListener extends ResponseEntityExceptionHandler {
 			RestException restException = (RestException)ex;
 			return handleExceptionInternal(ex, restException.getMessage(), headers, restException.getStatusCode() , request);
 		}
+
+		ex.printStackTrace();
 		
 		String unexpectedErrorMessage = env.getProperty("unexpected.error.message");
 		return handleExceptionInternal(ex, unexpectedErrorMessage, headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
