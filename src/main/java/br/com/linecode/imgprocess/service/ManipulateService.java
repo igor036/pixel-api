@@ -19,6 +19,7 @@ public class ManipulateService {
 	
 	private static final String INVALID_DIMENSSION_MSG = "Enter a new dimension for image.";
 	private static final String INVALID_REGION_MSG = "Enter a region for crop the image.";
+	private static final String INVALID_ALPHA = "Invalid alpha value, min value should be be 5.";
 	
 	@Autowired
 	private ValidatorService validatorService; 
@@ -39,6 +40,12 @@ public class ManipulateService {
 		} catch (IllegalArgumentException e) {
 			throw new BadRequestException(e.getMessage());
 		}
+	}
+
+	public byte[] blur(MultipartFile file, double alpha) throws IOException {
+		MultipartFileUtil.assertFile(file);
+		if (alpha <= 5) throw new BadRequestException(INVALID_ALPHA);
+		return ImageUtil.blur(file.getBytes(), MultipartFileUtil.getExtension(file), alpha);
 	}
 	
 	private void assertDimenssion(Dimenssion dimenssion) {

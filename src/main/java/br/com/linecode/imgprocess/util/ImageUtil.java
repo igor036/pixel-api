@@ -6,11 +6,12 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs; 
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import br.com.linecode.imgprocess.model.Dimenssion;
 import br.com.linecode.imgprocess.model.Region;
+
 
 public abstract class ImageUtil {
 	
@@ -56,6 +57,17 @@ public abstract class ImageUtil {
 		image = image.submat(rect);
 		
 		return getBlob(image, extension);
+	}
+
+	public static byte[] blur(byte[]blobImage,  String extension, double alpha) throws IOException {
+		
+		Mat image = getMat(blobImage);
+		Mat blurImage = new Mat();
+
+		Imgproc.blur(image, blurImage, new Size(alpha, alpha));
+
+		return getBlob(blurImage, extension);
+		
 	}
 	
 	/**

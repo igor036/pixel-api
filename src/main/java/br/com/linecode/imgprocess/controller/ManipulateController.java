@@ -32,4 +32,9 @@ public class ManipulateController {
 	public void crop(@RequestPart MultipartFile file, Region region, HttpServletResponse response) throws IOException {
 		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.crop(file, region), response);
 	}
+
+	@GetMapping("blur")
+	public void blur(@RequestPart MultipartFile file, double alpha, HttpServletResponse response)  throws IOException {
+		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.blur(file, alpha), response);
+	}
 }
