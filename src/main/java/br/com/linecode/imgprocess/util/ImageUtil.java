@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -59,15 +60,45 @@ public abstract class ImageUtil {
 		return getBlob(image, extension);
 	}
 
+	/**
+	 * Convert an image to a blur image
+	 *  
+	 *  @param blobImage {@link byte[]}
+	 *  @param extension {@link String} extension from original file
+	 *  @param alpha 	 {@link double}
+	 * 
+	 *  @return {@link byte[]}	   
+	 *  @throws IOException
+	 */
 	public static byte[] blur(byte[]blobImage,  String extension, double alpha) throws IOException {
 		
 		Mat image = getMat(blobImage);
 		Mat blurImage = new Mat();
 
 		Imgproc.blur(image, blurImage, new Size(alpha, alpha));
-
 		return getBlob(blurImage, extension);
 		
+	}
+
+	/**
+	 * 	Convert a region of image to a blur region
+	 *  
+	 *  @param blobImage {@link byte[]}
+	 *  @param extension {@link String} extension from original file
+	 *  @param alpha 	 {@link double}
+	 *  @param region 	 {@link Region}
+	 * 
+	 *  @return {@link byte[]}	   
+	 *  @throws IOException
+	 */
+	public static byte[] blur(byte[]blobImage,  String extension, double alpha, Region region) throws IOException {
+		
+		Mat image = getMat(blobImage);
+		Rect rect = regionToRect(region);
+
+		Imgproc.blur(image.submat(rect), image.submat(rect), new Size(alpha, alpha));
+		
+		return getBlob(image, extension);		
 	}
 	
 	/**
@@ -102,6 +133,12 @@ public abstract class ImageUtil {
 		Imgcodecs.imencode(".".concat(extension), image, bytes);
 		
 		return bytes.toArray();
+	}
+
+	private static Rect regionToRect(Region region) {
+		Point a = new Point(region.getPointX(), region.getPointY());
+		Point b = new Point(region.getPointX() + region.getWidth(), region.getPointY() + region.getHeight());
+		return new Rect(a, b);
 	}
 	
 	private static void assertCrop(Mat image, Region region) {
