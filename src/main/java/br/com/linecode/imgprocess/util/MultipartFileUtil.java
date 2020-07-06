@@ -8,8 +8,8 @@ public abstract class MultipartFileUtil {
 	
 	private static final String ACCEPTED_EXTENSIONS = "PNG/JPG/JPEG";
 	
-	private static final String INVALID_FILE_MESSAGE = "Inform an image file, extensions accepted (.png, .jpg, .jpeg).";
-	private static final String EMPTY_FILE_MESSAGE = "The informed file are empty";
+	public static final String INVALID_FILE_MESSAGE = "Inform an image file, extensions accepted (.png, .jpg, .jpeg).";
+	public static final String EMPTY_FILE_MESSAGE = "The informed file are empty";
 	
 	public static void assertFile(MultipartFile file) {
 		assertNotNull(file);

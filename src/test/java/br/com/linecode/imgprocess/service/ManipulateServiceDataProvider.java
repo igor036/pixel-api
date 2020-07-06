@@ -9,7 +9,7 @@ import br.com.linecode.imgprocess.model.Dimenssion;
 import br.com.linecode.imgprocess.model.Region;
 import br.com.linecode.util.TestUtil;
 
-public class ManipulateServiceDataProvider {
+public abstract class ManipulateServiceDataProvider {
     
     private static final String NM_IMG_TEST = "java-logo.png";
 
@@ -52,6 +52,6 @@ public class ManipulateServiceDataProvider {
     }
 
     private static MultipartFile getMultipartFileTest() throws IOException {
-        return new TestUtil().getResourceMultiPartFie(NM_IMG_TEST);
+        return new TestUtil().getResourceMultiPartFile(NM_IMG_TEST);
     }
 }
