@@ -30,5 +30,10 @@ public class FilterController {
     @GetMapping("blur/region")
 	public void blur(@RequestPart MultipartFile file, double alpha, Region region, HttpServletResponse response)  throws IOException {
 		HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.blur(file, alpha, region), response);
+    }
+    
+    @GetMapping("grayScale")
+	public void grayScale(@RequestPart MultipartFile file, HttpServletResponse response)  throws IOException {
+		HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScale(file), response);
 	}
 }

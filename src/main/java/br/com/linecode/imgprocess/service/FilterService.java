@@ -25,14 +25,19 @@ public class FilterService {
     public byte[] blur(MultipartFile file, double alpha) throws IOException {
 		MultipartFileUtil.assertFile(file);
         if (alpha <= 5) throw new BadRequestException(INVALID_ALPHA);
-		return ImageUtil.blur(file.getBytes (), MultipartFileUtil.getExtension(file), alpha);
+		return ImageUtil.blur(file.getBytes(), MultipartFileUtil.getExtension(file), alpha);
     }
     
     public byte[] blur(MultipartFile file, double alpha, Region region) throws IOException {
         MultipartFileUtil.assertFile(file);
         assertRegion(region);
         if (alpha <= 5) throw new BadRequestException(INVALID_ALPHA);
-        return ImageUtil.blur(file.getBytes (), MultipartFileUtil.getExtension(file), alpha, region);
+        return ImageUtil.blur(file.getBytes(), MultipartFileUtil.getExtension(file), alpha, region);
+    }
+
+    public byte[] grayScale(MultipartFile file) throws IOException {
+        MultipartFileUtil.assertFile(file);
+        return ImageUtil.grayScale(file.getBytes(), MultipartFileUtil.getExtension(file));
     }
     
     private void assertRegion(Region region) {

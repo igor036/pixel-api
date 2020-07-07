@@ -74,10 +74,9 @@ public abstract class ImageUtil {
 		
 		Mat image = getMat(blobImage);
 		Mat blurImage = new Mat();
-
 		Imgproc.blur(image, blurImage, new Size(alpha, alpha));
-		return getBlob(blurImage, extension);
 		
+		return getBlob(blurImage, extension);
 	}
 
 	/**
@@ -95,12 +94,29 @@ public abstract class ImageUtil {
 		
 		Mat image = getMat(blobImage);
 		Rect rect = regionToRect(region);
-
 		Imgproc.blur(image.submat(rect), image.submat(rect), new Size(alpha, alpha));
 		
 		return getBlob(image, extension);		
 	}
 	
+	/**
+	 * 	Convert an image to gray scale
+	 *  
+	 *  @param blobImage {@link byte[]}
+	 *  @param extension {@link String} extension from original file
+	 * 
+	 *  @return {@link byte[]}	   
+	 *  @throws IOException
+	 */
+	public static byte[] grayScale(byte[]blobImage,  String extension) throws IOException {
+
+		Mat image = getMat(blobImage);
+		Mat grayScaleImage = new Mat();
+		Imgproc.cvtColor(image, grayScaleImage, Imgproc.COLOR_BGR2GRAY);
+		
+		return getBlob(grayScaleImage, extension);
+	}
+
 	/**
 	 * Convert a {@link byte[]} to {@link Mat}
 	 * 
