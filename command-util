@@ -1,5 +1,5 @@
 #run application with test
-mvn -Pbuild; docker-compose up --build -d
+mvn -DskipTests=false -Pbuild; docker-compose up --build
 
 #run application without test
-mvn -DskipTests -Pbuild; docker-compose up --build
+mvn -DskipTests=true -Pbuild; docker-compose up --build

@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 import br.com.linecode.imgprocess.model.Region;
 import br.com.linecode.shared.excpetion.BadRequestException;
 import br.com.linecode.shared.service.ValidatorService;
+import br.com.linecode.util.MultipartFileUtilDataProvider;
 
 public class FilterServiceUnitTest {
 
@@ -51,6 +52,24 @@ public class FilterServiceUnitTest {
             filterServiceMock.blur(file, alpha, region);
         } catch(BadRequestException | IllegalArgumentException ex) {
             Assert.assertTrue(ex.getMessage().contains(error));
+        }
+    }
+
+    @Test(dataProvider = "assertFileErrorTestDataProvider", dataProviderClass = MultipartFileUtilDataProvider.class)
+    public void grayScaleErrorTestDataProvider(MultipartFile file, String error) throws IOException {
+        try {
+            filterServiceMock.grayScale(file);
+        } catch(BadRequestException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
+
+    @Test(dataProvider = "grayScaleRegionErrorTestDataProvider", dataProviderClass = FilterServiceDataProvider.class)
+    public void grayScaleRegionErrorTest(MultipartFile file, Region region, String error) throws IOException {
+        try {
+            filterServiceMock.grayScale(file, region);
+        } catch(BadRequestException | IllegalArgumentException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
         }
     }
 }

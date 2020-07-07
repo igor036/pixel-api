@@ -16,7 +16,7 @@ import br.com.linecode.shared.service.ValidatorService;
 @Service
 public class FilterService {
     
-    private static final String INVALID_REGION_MSG = "Enter a region for crop the image.";
+    private static final String INVALID_REGION_MSG = "Enter a region of image.";
     private static final String INVALID_ALPHA = "Invalid alpha value, min value should be be 5.";
 
     @Autowired
