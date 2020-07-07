@@ -12,12 +12,14 @@ import org.opencv.imgproc.Imgproc;
 
 import br.com.linecode.imgprocess.model.Dimenssion;
 import br.com.linecode.imgprocess.model.Region;
+import br.com.linecode.shared.excpetion.BadRequestException;
 
 
 public abstract class ImageUtil {
 	
 	
-	private static final String INVALID_CROP_SIZE_MSG = "The informed size are bigger of original size.";
+	private static final String INVALID_REGION_WIDTH = "the width of region are bigger than image width!";
+	private static final String INVALID_REGION_HEIGHT = "the height of region are bigger than image height!";
 	
 	/**
 	 * This method create a new image by original image with new size informeted.
@@ -53,7 +55,7 @@ public abstract class ImageUtil {
 	public static byte[] crop(byte[] blobImage, String extension, Region region) throws IOException, IllegalArgumentException {
 		
 		Mat image = getMat(blobImage);
-		assertCrop(image, region);
+		assertRegion(image, region);
 		Rect rect = new Rect(region.getPointX(), region.getPointY(), region.getWidth(), region.getHeight());
 		image = image.submat(rect);
 		
@@ -94,7 +96,8 @@ public abstract class ImageUtil {
 		
 		Rect rect = regionToRect(region);
 		Mat image = getMat(blobImage);
-		
+
+		assertRegion(image, region);
 		Imgproc.blur(image.submat(rect), image.submat(rect), new Size(alpha, alpha));
 		
 		return getBlob(image, extension);		
@@ -130,8 +133,10 @@ public abstract class ImageUtil {
 	 */
 	public static byte[] grayScale(byte[]blobImage, Region region, String extension) throws IOException {
 
-		Rect rect = regionToRect(region);
 		Mat image = getMat(blobImage);
+		assertRegion(image, region);
+		
+		Rect rect = regionToRect(region);
 		Mat sub = image.submat(rect);
 
 		Imgproc.cvtColor(sub, sub, Imgproc.COLOR_BGR2GRAY);
@@ -181,13 +186,17 @@ public abstract class ImageUtil {
 		return new Rect(a, b);
 	}
 	
-	private static void assertCrop(Mat image, Region region) {
+	private static void assertRegion(Mat image, Region region) {
 		
 		int rectWidth = region.getPointX() + region.getWidth();
 		int rectHeight = region.getPointY() + region.getHeight();
 		
-		if (rectWidth > image.cols() || rectHeight > image.rows()) {
-			throw new IllegalArgumentException(INVALID_CROP_SIZE_MSG);
+		if (rectWidth > image.cols()) {
+			throw new BadRequestException(INVALID_REGION_WIDTH);
+		}
+
+		if (rectHeight > image.rows()) {
+			throw new BadRequestException(INVALID_REGION_HEIGHT);
 		}
 	}
 }
