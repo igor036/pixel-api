@@ -23,17 +23,22 @@ public class FilterController {
     private FilterService filtlerService;
 
     @GetMapping("blur")
-	public void blur(@RequestPart MultipartFile file, double alpha, HttpServletResponse response)  throws IOException {
-		HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.blur(file, alpha), response);
+    public void blur(@RequestPart MultipartFile file, double alpha, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.blur(file, alpha), response);
     }
-    
+      
     @GetMapping("blur/region")
-	public void blur(@RequestPart MultipartFile file, double alpha, Region region, HttpServletResponse response)  throws IOException {
-		HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.blur(file, alpha, region), response);
+    public void blur(@RequestPart MultipartFile file, double alpha, Region region, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.blur(file, alpha, region), response);
     }
-    
+      
     @GetMapping("grayScale")
-	public void grayScale(@RequestPart MultipartFile file, HttpServletResponse response)  throws IOException {
-		HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScale(file), response);
-	}
+    public void grayScale(@RequestPart MultipartFile file, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScale(file), response);
+    }
+      
+    @GetMapping("grayScale/region")
+    public void grayScale(@RequestPart MultipartFile file, Region region, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScale(file, region), response);
+    }
 }

@@ -39,6 +39,12 @@ public class FilterService {
         MultipartFileUtil.assertFile(file);
         return ImageUtil.grayScale(file.getBytes(), MultipartFileUtil.getExtension(file));
     }
+
+    public byte[] grayScale(MultipartFile file, Region region) throws IOException {
+        MultipartFileUtil.assertFile(file);
+        assertRegion(region);
+        return ImageUtil.grayScale(file.getBytes(), region, MultipartFileUtil.getExtension(file));
+    }
     
     private void assertRegion(Region region) {
 		Assert.notNull(region, INVALID_REGION_MSG);

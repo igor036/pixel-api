@@ -92,8 +92,9 @@ public abstract class ImageUtil {
 	 */
 	public static byte[] blur(byte[]blobImage,  String extension, double alpha, Region region) throws IOException {
 		
-		Mat image = getMat(blobImage);
 		Rect rect = regionToRect(region);
+		Mat image = getMat(blobImage);
+		
 		Imgproc.blur(image.submat(rect), image.submat(rect), new Size(alpha, alpha));
 		
 		return getBlob(image, extension);		
@@ -115,6 +116,29 @@ public abstract class ImageUtil {
 		Imgproc.cvtColor(image, grayScaleImage, Imgproc.COLOR_BGR2GRAY);
 		
 		return getBlob(grayScaleImage, extension);
+	}
+
+	/**
+	 * 	Convert a region of image to a grayscale region
+	 *  
+	 *  @param blobImage {@link byte[]}
+	 * 	@param region 	 {@link Region}
+	 *  @param extension {@link String} extension from original file
+	 * 
+	 *  @return {@link byte[]}	   
+	 *  @throws IOException
+	 */
+	public static byte[] grayScale(byte[]blobImage, Region region, String extension) throws IOException {
+
+		Rect rect = regionToRect(region);
+		Mat image = getMat(blobImage);
+		Mat sub = image.submat(rect);
+
+		Imgproc.cvtColor(sub, sub, Imgproc.COLOR_BGR2GRAY);
+		Imgproc.cvtColor(sub, sub, Imgproc.COLOR_GRAY2BGR);
+		
+		sub.copyTo(image.submat(rect));
+		return getBlob(image, extension);
 	}
 
 	/**
