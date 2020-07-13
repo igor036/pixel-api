@@ -1,0 +1,1 @@
+mvn -DskipTests=true -Pbuild; docker container prune -y;  docker-compose up --build -d
