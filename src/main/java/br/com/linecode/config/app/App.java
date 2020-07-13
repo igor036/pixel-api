@@ -11,7 +11,7 @@ import br.com.linecode.shared.util.OpenCVUtil;
 public class App  {
 	
     public static void main( String[] args ) {
-        OpenCVUtil.initOpenCV();
+        OpenCVUtil.initOpenCV();    
     	SpringApplication.run(App.class, args);
     }
 }
