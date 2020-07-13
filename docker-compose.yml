@@ -2,6 +2,11 @@ version: '3'
 services:
   pixel-api:  
     build:
-      context: "."
-    ports:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: pixel/api
+    ports:  
       - "8080:8080"
+      - "5005:5005"
+    environment:
+      - ADDITIONAL_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
