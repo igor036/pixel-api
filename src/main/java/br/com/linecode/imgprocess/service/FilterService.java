@@ -2,13 +2,14 @@ package br.com.linecode.imgprocess.service;
 
 import java.io.IOException;
 
+import org.opencv.core.Mat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.linecode.imgprocess.model.Region;
-import br.com.linecode.imgprocess.util.ImageUtil;
+import br.com.linecode.imgprocess.util.MatUtil;
 import br.com.linecode.imgprocess.util.MultipartFileUtil;
 import br.com.linecode.shared.excpetion.BadRequestException;
 import br.com.linecode.shared.service.ValidatorService;
@@ -23,27 +24,61 @@ public class FilterService {
 	private ValidatorService validatorService; 
 
     public byte[] blur(MultipartFile file, double alpha) throws IOException {
-		MultipartFileUtil.assertFile(file);
-        if (alpha <= 5) throw new BadRequestException(INVALID_ALPHA);
-		return ImageUtil.blur(file.getBytes(), MultipartFileUtil.getExtension(file), alpha);
+        
+        MultipartFileUtil.assertFile(file);
+        
+        if (alpha >= 5) {
+
+            Mat image = MatUtil.getMat(file.getBytes());
+            Mat blur = MatUtil.blur(image, alpha);
+            String extension = MultipartFileUtil.getExtension(file);
+
+            return MatUtil.getBlob(blur, extension);
+            
+        }
+
+        throw new BadRequestException(INVALID_ALPHA);
     }
     
     public byte[] blur(MultipartFile file, double alpha, Region region) throws IOException {
+        
         MultipartFileUtil.assertFile(file);
         assertRegion(region);
-        if (alpha <= 5) throw new BadRequestException(INVALID_ALPHA);
-        return ImageUtil.blur(file.getBytes(), MultipartFileUtil.getExtension(file), alpha, region);
+
+        if (alpha >= 5) {
+
+            Mat image = MatUtil.getMat(file.getBytes());
+            Mat blur = MatUtil.blur(image, alpha, region);
+            String extension = MultipartFileUtil.getExtension(file);
+
+            return MatUtil.getBlob(blur, extension);
+        }
+
+        throw new BadRequestException(INVALID_ALPHA);
     }
 
     public byte[] grayScale(MultipartFile file) throws IOException {
+        
         MultipartFileUtil.assertFile(file);
-        return ImageUtil.grayScale(file.getBytes(), MultipartFileUtil.getExtension(file));
+        
+        Mat image = MatUtil.getMat(file.getBytes());
+        Mat grayScale = MatUtil.grayScale(image);
+        String extension = MultipartFileUtil.getExtension(file);
+
+        return MatUtil.getBlob(grayScale, extension);
     }
 
     public byte[] grayScale(MultipartFile file, Region region) throws IOException {
+        
         MultipartFileUtil.assertFile(file);
         assertRegion(region);
-        return ImageUtil.grayScale(file.getBytes(), region, MultipartFileUtil.getExtension(file));
+        
+        Mat image = MatUtil.getMat(file.getBytes());
+        Mat grayScale = MatUtil.grayScale(image, region);
+        String extension = MultipartFileUtil.getExtension(file);
+
+        return MatUtil.getBlob(grayScale, extension);
+
     }
     
     private void assertRegion(Region region) {
