@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.linecode.imgprocess.model.Region;
+import br.com.linecode.imgprocess.model.RgbColor;
 import br.com.linecode.imgprocess.service.FilterService;
 import br.com.linecode.shared.util.HttpServletResponseUtil;
 
@@ -50,5 +51,15 @@ public class FilterController {
     @GetMapping("grayScale/mold")
     public void grayScaleMold(@RequestPart MultipartFile file, HttpServletResponse response)  throws IOException {
       HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScaleMold(file), response);
+    }
+
+    @GetMapping("rgb/mold")
+    public void rgbMold(@RequestPart MultipartFile file, RgbColor color, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.rgbMold(file, color), response);
+    }
+
+    @GetMapping("rgb/mold/principal-color")
+    public void rgbMoldPrincipalColor(@RequestPart MultipartFile file, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.rgbMoldPrincipalColor(file), response);
     }
 }

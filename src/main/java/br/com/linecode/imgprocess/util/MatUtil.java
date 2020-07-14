@@ -1,17 +1,28 @@
 package br.com.linecode.imgprocess.util;
 
 import java.io.IOException;
+import java.security.KeyStore.Entry;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.w3c.dom.css.RGBColor;
 
 import br.com.linecode.imgprocess.model.Dimenssion;
+import br.com.linecode.imgprocess.model.HsvColor;
 import br.com.linecode.imgprocess.model.Region;
+import br.com.linecode.imgprocess.model.RgbColor;
 import br.com.linecode.shared.excpetion.BadRequestException;
 
 
@@ -204,6 +215,58 @@ public abstract class MatUtil {
 
 		foreground.copyTo(image.submat(new Rect(a, b)));
 		return image;
+	}
+
+	/**
+	 * Create an image by color rgb and size.
+	 * 
+	 * @param color {@link Mat}
+	 * @param size  {@link Mat}
+	 * @return      {@link Mat}
+	 * 
+	 */
+	public static Mat getRGBMat(RgbColor color, Dimenssion size) {
+		Scalar scalar = new Scalar(color.getB(), color.getG(), color.getR());
+		return new Mat(size.getHeight(), size.getWidth(), CvType.CV_8UC3, scalar);
+	}
+
+
+	/**
+	 * Return the color that more present in the image in <b>RGB<b> space.
+	 * 
+	 * @param image
+	 * @return {@link RgbColor}
+	 */
+	public static RgbColor findPrincipalColor(Mat image) {
+
+		Mat hsv = new Mat();
+		Map<HsvColor, Integer> hueMap = new HashMap<>();
+
+		Imgproc.cvtColor(image, hsv, Imgproc.COLOR_BGR2HSV);
+
+		for (int x = 0; x < hsv.rows(); x++) {
+			for (int y = 0; y < hsv.cols(); y++) {
+				
+				double[] pixel = hsv.get(x, y);
+				HsvColor hsvColor = new HsvColor((int)pixel[0], (int)pixel[1], (int)pixel[2]);
+				hueMap.put(hsvColor, hueMap.getOrDefault(hsvColor, 0)+1);
+
+			}
+		}
+
+		List<Map.Entry<HsvColor, Integer>> entrys = new ArrayList<>(hueMap.entrySet());
+		entrys.sort((Map.Entry<HsvColor, Integer> a, Map.Entry<HsvColor, Integer> b) -> Integer.compare(a.getValue(), b.getValue()));
+
+		HsvColor hsvColor = entrys.get(0).getKey();
+		Mat hsvPixelMat = new  Mat(1, 1, CvType.CV_8UC3, new Scalar(hsvColor.getH(), hsvColor.getS(), hsvColor.getV()));
+		Mat rgbPixelMat = new Mat();
+
+		Imgproc.cvtColor(hsvPixelMat, rgbPixelMat, Imgproc.COLOR_HSV2RGB);
+
+		double[] rgbPixel = rgbPixelMat.get(0, 0);
+		RgbColor rgbColor = new RgbColor((int)rgbPixel[0], (int)rgbPixel[1], (int)rgbPixel[2]);
+
+		return rgbColor;
 	}
 
 	public static Mat copy(Mat image) {

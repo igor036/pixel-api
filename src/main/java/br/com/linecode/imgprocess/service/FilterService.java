@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.linecode.imgprocess.model.Dimenssion;
 import br.com.linecode.imgprocess.model.Region;
+import br.com.linecode.imgprocess.model.RgbColor;
 import br.com.linecode.imgprocess.util.MatUtil;
 import br.com.linecode.imgprocess.util.MultipartFileUtil;
 import br.com.linecode.shared.excpetion.BadRequestException;
@@ -119,9 +121,47 @@ public class FilterService {
 
         return MatUtil.getBlob(blurMold, extension);
     }
+
+    public byte[] rgbMold(MultipartFile file, RgbColor color) throws IOException {
+
+        MultipartFileUtil.assertFile(file);
+        validatorService.assertModel(color); 
+
+        String extension = MultipartFileUtil.getExtension(file);
+        Mat image = MatUtil.getMat(file.getBytes());
+
+        return MatUtil.getBlob(rgbMold(image, color), extension);
+    }
+
+    public byte[] rgbMoldPrincipalColor(MultipartFile file) throws IOException {
+
+        MultipartFileUtil.assertFile(file);
+        String extension = MultipartFileUtil.getExtension(file);
+        Mat image = MatUtil.getMat(file.getBytes());
+        RgbColor color = MatUtil.findPrincipalColor(image);
+
+        return MatUtil.getBlob(rgbMold(image, color), extension);
+
+    }
+
+    public Mat rgbMold(Mat image, RgbColor color) throws IOException {
+        
+        Mat foreground = MatUtil.copy(image);
+        Mat background = MatUtil.getRGBMat(color, getBackgroundDimenssion(foreground));
+
+        foreground = MatUtil.decreaseSize(foreground, DEFAULTL_RESIZE_PERCENTAGE);
+
+        return MatUtil.putForeground(background, foreground);
+    }
+
+    private Dimenssion getBackgroundDimenssion(Mat image) {
+        int width = (int)(image.width() + (image.width() * DEFAULTL_RESIZE_PERCENTAGE));
+        int height = (int)(image.height() +  (image.height()* DEFAULTL_RESIZE_PERCENTAGE));
+        return new Dimenssion(width, height);
+    }
     
     private void assertRegion(Region region) {
 		Assert.notNull(region, INVALID_REGION_MSG);
 		validatorService.assertModel(region);
 	}
-}
+}   
