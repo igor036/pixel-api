@@ -31,6 +31,11 @@ public class FilterController {
     public void blur(@RequestPart MultipartFile file, double alpha, Region region, HttpServletResponse response)  throws IOException {
       HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.blur(file, alpha, region), response);
     }
+
+    @GetMapping("blur/mold")
+    public void blurMold(@RequestPart MultipartFile file, double alpha, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.blurMold(file, alpha), response);
+    } 
       
     @GetMapping("grayScale")
     public void grayScale(@RequestPart MultipartFile file, HttpServletResponse response)  throws IOException {
@@ -40,5 +45,10 @@ public class FilterController {
     @GetMapping("grayScale/region")
     public void grayScale(@RequestPart MultipartFile file, Region region, HttpServletResponse response)  throws IOException {
       HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScale(file, region), response);
+    }
+
+    @GetMapping("grayScale/mold")
+    public void grayScaleMold(@RequestPart MultipartFile file, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScaleMold(file), response);
     }
 }

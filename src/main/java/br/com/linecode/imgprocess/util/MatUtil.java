@@ -163,6 +163,49 @@ public abstract class MatUtil {
 		return Imgcodecs.imdecode(new MatOfByte(blobImage), Imgcodecs.IMREAD_UNCHANGED);
 	}
 
+	/**
+	 * Increase width and height in percentage value
+	 * 
+	 * @param image 	 {@link Mat} 
+	 * @param percentage {@link double} 
+	 * @return {@link Mat} 
+	 */
+	public static Mat increaseSize(Mat image, double percentage) throws IOException {
+        int width = (int)(image.width() + (image.width() * percentage));
+        int height = (int)(image.height() + (image.height()* percentage));
+        return MatUtil.resize(image, new Dimenssion(width, height));
+	}
+	
+	public static Mat decreaseSize(Mat image, double percentage) throws IOException {
+		int width = (int)(image.width() - (image.width() * percentage));
+        int height = (int)(image.height() - (image.height()* percentage));
+        return MatUtil.resize(image, new Dimenssion(width, height));
+	}
+
+	/**
+	 * put a foreground on a background
+	 * 
+	 * @param background {@link Mat}
+	 * @param foreground {@link Mat}
+	 * @return {@link Mat}
+	 */
+	public static Mat putForeground(Mat background, Mat foreground) {
+
+		Mat image = copy(background);
+		
+		int x = (Math.abs(background.cols() - foreground.cols())) / 2;
+		int y = (Math.abs(background.rows() - foreground.rows())) / 2;
+
+		int width = foreground.cols()  + x;
+		int height = foreground.rows() + y;
+		
+		Point a = new Point(x, y);
+		Point b = new Point(width, height);
+
+		foreground.copyTo(image.submat(new Rect(a, b)));
+		return image;
+	}
+
 	public static Mat copy(Mat image) {
 		Mat copy = new Mat();
 		image.copyTo(copy);

@@ -72,4 +72,13 @@ public class FilterServiceUnitTest {
             Assert.assertEquals(ex.getMessage(), error);
         }
     }
+
+    @Test(dataProvider = "assertFileErrorTestDataProvider", dataProviderClass = MultipartFileUtilDataProvider.class)
+    public void blurMoldErrorTest(MultipartFile file, String error) throws IOException {
+        try {
+            filterServiceMock.blurMold(file, 0d);
+        } catch(BadRequestException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
 }
