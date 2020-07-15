@@ -14,6 +14,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import br.com.linecode.imgprocess.model.Region;
+import br.com.linecode.imgprocess.model.RgbColor;
 import br.com.linecode.shared.excpetion.BadRequestException;
 import br.com.linecode.shared.service.ValidatorService;
 import br.com.linecode.util.MultipartFileUtilDataProvider;
@@ -77,6 +78,33 @@ public class FilterServiceUnitTest {
     public void blurMoldErrorTest(MultipartFile file, String error) throws IOException {
         try {
             filterServiceMock.blurMold(file, 0d);
+        } catch(BadRequestException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
+
+    @Test(dataProvider = "assertFileErrorTestDataProvider", dataProviderClass = MultipartFileUtilDataProvider.class)
+    public void grayScaleErrortest(MultipartFile file, String error) throws IOException {
+        try {
+            filterServiceMock.grayScale(file);
+        } catch(BadRequestException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
+
+    @Test(dataProvider = "rgbMoldErrorTestDataProvider", dataProviderClass = FilterServiceDataProvider.class)
+    public void rgbMoldErrorTest(MultipartFile file, RgbColor color, String error) throws IOException{
+        try {
+            filterServiceMock.rgbMold(file, color);
+        } catch(BadRequestException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
+
+    @Test(dataProvider = "rgbMoldPrincipalColorErrorTestDataProvider", dataProviderClass = FilterServiceDataProvider.class)
+    public void rgbMoldPrincipalColorErrorTest(MultipartFile file, RgbColor color, String error) throws IOException{
+        try {
+            filterServiceMock.rgbMoldPrincipalColor(file);
         } catch(BadRequestException ex) {
             Assert.assertEquals(ex.getMessage(), error);
         }

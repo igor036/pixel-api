@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.testng.annotations.DataProvider;
 
 import br.com.linecode.imgprocess.model.Region;
+import br.com.linecode.imgprocess.model.RgbColor;
+import br.com.linecode.imgprocess.util.MultipartFileUtil;
 import br.com.linecode.util.TestUtil;
 
 public abstract class FilterServiceDataProvider {
@@ -71,6 +73,48 @@ public abstract class FilterServiceDataProvider {
             {img, invalidY, INVALID_Y},
             {img, invaidWidth, INVALID_WIDTH},
             {img, invalidheight, INVALID_HEIGHT},
+        };
+        //@formatter:on
+    }
+
+    @DataProvider(name = "rgbMoldErrorTestDataProvider")
+    public static Object[][] rgbMoldErrorTestDataProvider() throws IOException {
+
+        RgbColor validColor = new RgbColor(100, 100, 100);
+        MultipartFile validFile = UTIL.getResourceMultiPartFile(NM_IMG_TEST);
+
+        RgbColor minRInvalid = new RgbColor(-1, 100, 100);
+        RgbColor maxRInvalid = new RgbColor(256, 100, 100);
+
+        RgbColor minGInvalid = new RgbColor(100, -1, 100);
+        RgbColor maxGInvalid = new RgbColor(100, 256, 100);
+
+        RgbColor miBInvalid = new RgbColor(100, 100, -1);
+        RgbColor maxBInvalid = new RgbColor(100, 100, 256);
+
+        //@formatter:off
+        return new Object[][] {
+            {null, validColor, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {UTIL.getMP4MultiPartFile(), validColor, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {UTIL.getEmptyMultiPartFile(), validColor, MultipartFileUtil.EMPTY_FILE_MESSAGE},
+            {validFile, minRInvalid, "Min value for R is 0."},
+            {validFile, maxRInvalid, "Max value for R is 255."},
+            {validFile, minGInvalid, "Min value for G is 0."},
+            {validFile, maxGInvalid, "Max value for G is 255."},
+            {validFile, miBInvalid, "Min value for B is 0."},
+            {validFile, maxBInvalid, "Max value for B is 255."}
+        };
+        //@formatter:on
+    }
+
+    @DataProvider(name = "rgbMoldPrincipalColorErrorTestDataProvider")
+    public static Object[][] rgbMoldPrincipalColorErrorTestDataProvider() throws IOException {
+        RgbColor validColor = new RgbColor(100, 100, 100);
+        //@formatter:off
+        return new Object[][] {
+            {null, validColor, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {UTIL.getMP4MultiPartFile(), validColor, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {UTIL.getEmptyMultiPartFile(), validColor, MultipartFileUtil.EMPTY_FILE_MESSAGE}
         };
         //@formatter:on
     }
