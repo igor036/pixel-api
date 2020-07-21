@@ -7,8 +7,7 @@
 
 
 # 🎯 - How it works ?
-
-This API runing into a dokcer container created by the image <a href="https://hub.docker.com/r/asuprun/opencv-java">***asuprun/opencv-java***</a> that image have a binary of ***Opencv*** and ***JDK 8*** installed.
+This API is running into a docker container, created by the image <a href="https://hub.docker.com/r/asuprun/opencv-java">***asuprun/opencv-java***</a> that have a binary of ***Opencv*** and ***JDK 8*** installed.
 
 The ***Pixel-Api*** use the <a href="https://github.com/openpnp/opencv">***org.openpnp***</a> dependency with a opencv JNI interface.
 
@@ -17,8 +16,7 @@ The ***Pixel-Api*** use the <a href="https://github.com/openpnp/opencv">***org.o
         ↪ Set up the native library in your IDE (link native file in your JNDI lib).
 
 # 🏃 - How to run ?
-
-To run the project you will need to have the ***Docker*** and if you want rebuild ***.jar*** file you need the ***Maven*** installed on your PC ❗❕
+To run the project, you will need have the ***Docker*** and if you want to rebuild ***.jar*** file you need ***Maven*** installed on your PC
 
     ↪ If you only want to run the current build .jar file
 
@@ -37,8 +35,7 @@ To run the project you will need to have the ***Docker*** and if you want rebuil
         ▶ mvn -DskipTests=false -Pbuild; docker-compose up --build
 
 # 🐞 - How to debug ?
-
-For debugging the project you need configure ***remote debug*** in you IDE listen the ***localhost:5005***
+For debugging the project, you need to configure ***remote debug***, in your IDE listen, the ***localhost:5005***
 
 VScode: https://code.visualstudio.com/docs/editor/debugging <br/>
 Intelij: https://code.visualstudio.com/docs/editor/debugging <br/>
