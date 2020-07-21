@@ -12,7 +12,9 @@ This API runing into a dokcer container created by the image <a href="https://hu
 
 The ***Pixel-Api*** use the <a href="https://github.com/openpnp/opencv">***org.openpnp***</a> dependency with a opencv JNI interface.
 
-    ⚠ So you don't need to have OpenCV installed or set up the native library in your IDE (link native file in your JNDI lib).
+    ⚠ So you don't need to: 
+        ↪ Have OpenCV installed. 
+        ↪ Set up the native library in your IDE (link native file in your JNDI lib).
 
 # 🏃 - How to run ?
 
@@ -34,7 +36,7 @@ To run the project you will need to have the ***Docker*** and if you want rebuil
 
         ▶ mvn -DskipTests=false -Pbuild; docker-compose up --build
 
-# 🐞 - Hout to debug ?
+# 🐞 - How to debug ?
 
 For debugging the project you need configure ***remote debug*** in you IDE listen the ***localhost:5005***
 
