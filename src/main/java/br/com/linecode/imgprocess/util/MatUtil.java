@@ -138,7 +138,7 @@ public abstract class MatUtil {
 	}
 
 	/**
-	 * 	Convert a region of image to a sepia image
+	 * 	Convert image to a sepia image
 	 * 
 	 *  @param image  {@link Mat}
 	 *  @return       {@link Mat}	   
@@ -166,6 +166,25 @@ public abstract class MatUtil {
                 sepia.put(x, y, pixel);
             }
         }
+
+		return sepia;
+	}
+
+	/**
+	 * 	Convert a region of image to a sepia region
+	 * 
+	 *  @param image   {@link Mat}
+	 *  @param reigion {@link Region}
+	 *  @return        {@link Mat}	   
+	 *  @throws IOException
+	 */
+	public static Mat sepia(Mat image, Region region) throws IOException {
+
+		Mat sepia = copy(image);
+		Rect rect = regionToRect(region);
+
+		assertRegion(image, region);
+		sepia(sepia.submat(rect)).copyTo(sepia.submat(rect));
 
 		return sepia;
 	}

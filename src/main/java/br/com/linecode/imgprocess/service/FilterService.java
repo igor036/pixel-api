@@ -28,13 +28,26 @@ public class FilterService {
     @Autowired
 	private ValidatorService validatorService; 
 
-    //TODO implementar teste
     public byte[] sepia(MultipartFile file) throws IOException {
 
         MultipartFileUtil.assertFile(file);
 
         Mat image = MatUtil.getMat(file.getBytes());
         Mat sepia = MatUtil.sepia(image);
+        String extension = MultipartFileUtil.getExtension(file);
+
+        return MatUtil.getBlob(sepia, extension);
+
+    }
+
+    public byte[] sepia(MultipartFile file, Region region) throws IOException {
+
+        MultipartFileUtil.assertFile(file);
+        assertRegion(region);
+        validatorService.assertModel(region);
+
+        Mat image = MatUtil.getMat(file.getBytes());
+        Mat sepia = MatUtil.sepia(image, region);
         String extension = MultipartFileUtil.getExtension(file);
 
         return MatUtil.getBlob(sepia, extension);

@@ -28,6 +28,11 @@ public class FilterController {
       HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.sepia(file), response);
     }
 
+    @GetMapping("sepia/region")
+    public void sepia(@RequestPart MultipartFile file, Region region, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.sepia(file, region), response);
+    }
+
     @GetMapping("blur")
     public void blur(@RequestPart MultipartFile file, double alpha, HttpServletResponse response)  throws IOException {
       HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.blur(file, alpha), response);

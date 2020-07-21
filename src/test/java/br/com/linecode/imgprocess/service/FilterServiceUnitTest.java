@@ -109,4 +109,22 @@ public class FilterServiceUnitTest {
             Assert.assertEquals(ex.getMessage(), error);
         }
     }
+
+    @Test(dataProvider = "assertFileErrorTestDataProvider", dataProviderClass = MultipartFileUtilDataProvider.class)
+    public void sepiaErrotest(MultipartFile file, String error) throws IOException {
+        try {
+            filterServiceMock.sepia(file);
+        } catch(BadRequestException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
+
+    @Test(dataProvider = "sepiaErrorTestDataProvider", dataProviderClass = FilterServiceDataProvider.class)
+    public void sepiaErrorTest(MultipartFile file, Region region, String error) throws IOException {
+        try {
+            filterServiceMock.sepia(file, region);
+        } catch(BadRequestException | IllegalArgumentException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
 }

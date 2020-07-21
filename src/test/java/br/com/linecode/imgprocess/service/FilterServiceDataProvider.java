@@ -118,4 +118,27 @@ public abstract class FilterServiceDataProvider {
         };
         //@formatter:on
     }
+
+    @DataProvider(name = "sepiaErrorTestDataProvider")
+    public static Object[][] sepiaErrorTestDataProvider() throws IOException {
+        
+        MultipartFile img = UTIL.getResourceMultiPartFile(NM_IMG_TEST);
+        Region undefined = null;
+        Region invalidX = new Region(-1, 20, 20, 20);
+        Region invalidY = new Region(20, -1, 20, 20);
+        Region invaidWidth = new Region(20, 20, 2, 20);
+        Region invalidheight = new Region(20, 20, 20, 2);
+        Region validRegion = new Region(20, 20, 20, 20);
+
+        //@formatter:off
+        return new Object[][] {
+            {null, validRegion, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {img, undefined, INVALID_REGION},
+            {img, invalidX, INVALID_X},
+            {img, invalidY, INVALID_Y},
+            {img, invaidWidth, INVALID_WIDTH},
+            {img, invalidheight, INVALID_HEIGHT},
+        };
+        //@formatter:on
+    }
 }
