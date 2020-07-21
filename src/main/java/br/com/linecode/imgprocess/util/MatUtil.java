@@ -1,9 +1,7 @@
 package br.com.linecode.imgprocess.util;
 
 import java.io.IOException;
-import java.security.KeyStore.Entry;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +15,6 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-import org.w3c.dom.css.RGBColor;
 
 import br.com.linecode.imgprocess.model.Dimenssion;
 import br.com.linecode.imgprocess.model.HsvColor;
