@@ -23,6 +23,11 @@ public class FilterController {
     @Autowired
     private FilterService filtlerService;
 
+    @GetMapping("sepia")
+    public void sepia(@RequestPart MultipartFile file, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.sepia(file), response);
+    }
+
     @GetMapping("blur")
     public void blur(@RequestPart MultipartFile file, double alpha, HttpServletResponse response)  throws IOException {
       HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.blur(file, alpha), response);

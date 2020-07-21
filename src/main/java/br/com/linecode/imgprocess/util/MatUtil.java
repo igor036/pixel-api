@@ -138,6 +138,41 @@ public abstract class MatUtil {
 	}
 
 	/**
+	 * 	Convert a region of image to a sepia image
+	 * 
+	 *  @param image  {@link Mat}
+	 *  @return       {@link Mat}	   
+	 *  @throws IOException
+	 */
+	public static Mat sepia(Mat image) throws IOException {
+
+		Mat sepia = copy(image);
+
+		for (int x = 0; x < sepia.rows(); x++) {
+            for (int y = 0; y < sepia.cols(); y++) {
+            
+                //@formatter:off
+                double R = sepia.get(x, y)[2], 
+                       G = sepia.get(x, y)[1], 
+                       B = sepia.get(x, y)[0];
+                
+                double[] pixel = {
+                    0.272*R + 0.534*G + 0.131*B,
+                    0.349*R + 0.686*G + 0.168*B,
+                    0.393*R + 0.769*G + 0.189*B
+				};
+				//@formatter:on
+                
+                sepia.put(x, y, pixel);
+            }
+        }
+
+		return sepia;
+	}
+
+
+
+	/**
 	 * Convert a {@link Mat} to {@link byte[]}
 	 * 
 	 *  this method is using when this class nedd return a blob from process image.

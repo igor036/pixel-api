@@ -28,6 +28,19 @@ public class FilterService {
     @Autowired
 	private ValidatorService validatorService; 
 
+    //TODO implementar teste
+    public byte[] sepia(MultipartFile file) throws IOException {
+
+        MultipartFileUtil.assertFile(file);
+
+        Mat image = MatUtil.getMat(file.getBytes());
+        Mat sepia = MatUtil.sepia(image);
+        String extension = MultipartFileUtil.getExtension(file);
+
+        return MatUtil.getBlob(sepia, extension);
+
+    }
+
     public byte[] blur(MultipartFile file, double alpha) throws IOException {
         
         MultipartFileUtil.assertFile(file);
