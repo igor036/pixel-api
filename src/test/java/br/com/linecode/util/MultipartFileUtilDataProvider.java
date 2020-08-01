@@ -8,7 +8,6 @@ import br.com.linecode.imgprocess.util.MultipartFileUtil;
 
 public abstract class MultipartFileUtilDataProvider {
 
-    private static final String NM_IMG_TEST = "java-logo.png";
     private static TestUtil UTIL = new TestUtil();
 
     @DataProvider(name = "assertFileErrorTestDataProvider")
@@ -27,7 +26,7 @@ public abstract class MultipartFileUtilDataProvider {
         //@formatter:off
         return new Object[][] {
             {UTIL.getMP4MultiPartFile(), "mp4"},
-            {UTIL.getResourceMultiPartFile(NM_IMG_TEST), "png"},
+            {UTIL.getPNGMultiPartFile(), "png"},
         };
         //@formatter:on
     }

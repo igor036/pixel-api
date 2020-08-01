@@ -19,8 +19,8 @@ import br.com.linecode.shared.service.ValidatorService;
 public class ManipulateService {
 	
 	private static final String INVALID_DIMENSSION_MSG = "Enter a new dimension for image.";
-	private static final String INVALID_REGION_MSG = "Enter a region for crop the image.";
-	private static final String INVALID_BRIGHTNESS_ALPHA = "The brightness alpha value should be  >= 0.1 and <= 3.0";
+	private static final String INVALID_REGION_MSG = "Enter a region of image.";
+	private static final String INVALID_BRIGHTNESS_ALPHA_MSG = "The brightness alpha value should be  >= 0.1 and <= 3.0";
 
 	private static final double MIN_BRIGHTNESS_ALPHA = 0.1d;
 	private static final double MAX_BRIGHTNESS_ALPHA = 3d;
@@ -61,7 +61,7 @@ public class ManipulateService {
 	public byte[] brightness(MultipartFile file, double alpha) throws IOException {
 
 		if (alpha < MIN_BRIGHTNESS_ALPHA || alpha > MAX_BRIGHTNESS_ALPHA) {
-			throw new BadRequestException(INVALID_BRIGHTNESS_ALPHA);
+			throw new BadRequestException(INVALID_BRIGHTNESS_ALPHA_MSG);
 		}
 
 		MultipartFileUtil.assertFile(file);
@@ -75,7 +75,7 @@ public class ManipulateService {
 	public byte[] brightness(MultipartFile file, double alpha, Region region) throws IOException {
 
 		if (alpha < MIN_BRIGHTNESS_ALPHA || alpha > MAX_BRIGHTNESS_ALPHA) {
-			throw new BadRequestException(INVALID_BRIGHTNESS_ALPHA);
+			throw new BadRequestException(INVALID_BRIGHTNESS_ALPHA_MSG);
 		}
 
 		assertRegion(region);

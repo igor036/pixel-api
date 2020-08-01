@@ -55,4 +55,22 @@ public class ManipulateServiceUnitTest {
             Assert.assertTrue(ex.getMessage().contains(msgError));
         }
     }
+
+    @Test(dataProvider = "brightnessErrorTestDataProvider", dataProviderClass = ManipulateServiceDataProvider.class)
+    public void brightnessErrorTest(MultipartFile file, Double alpha, String msgError) throws IOException {
+        try {
+            manipulateServiceMock.brightness(file, alpha);
+        } catch(IllegalArgumentException | BadRequestException ex) {
+            Assert.assertTrue(ex.getMessage().contains(msgError));
+        }
+    }
+
+    @Test(dataProvider = "brightnessRegionErrorTestDataProvider", dataProviderClass = ManipulateServiceDataProvider.class)
+    public void brightnessRegionErrorTest(MultipartFile file, Double alpha, Region region, String msgError) throws IOException {
+        try {
+            manipulateServiceMock.brightness(file, alpha, region);
+        } catch(IllegalArgumentException | BadRequestException ex) {
+            Assert.assertTrue(ex.getMessage().contains(msgError));
+        }
+    }
 }

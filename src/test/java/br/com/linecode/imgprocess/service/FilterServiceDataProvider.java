@@ -19,17 +19,17 @@ public abstract class FilterServiceDataProvider {
     private static final String INVALID_WIDTH = "invalid width.";
     private static final String INVALID_HEIGHT = "invalid height.";
 
-    private static final String NM_IMG_TEST = "java-logo.png";
     private static final TestUtil UTIL = new TestUtil();
 
     @DataProvider(name = "blurErrorTestDataProvider")
     public static Object[][] blurErrorTestDataProvider() throws IOException {
+        MultipartFile validFile = UTIL.getPNGMultiPartFile();
         //@formatter:off
         return new Object[][] {
-            {UTIL.getResourceMultiPartFile(NM_IMG_TEST),  0d,  INVALID_ALPHA_MSG},
-            {UTIL.getResourceMultiPartFile(NM_IMG_TEST), -3d,  INVALID_ALPHA_MSG},
-            {UTIL.getResourceMultiPartFile(NM_IMG_TEST),  4d,  INVALID_ALPHA_MSG},
-            {UTIL.getResourceMultiPartFile(NM_IMG_TEST),  4.8, INVALID_ALPHA_MSG}
+            {validFile,  0d,  INVALID_ALPHA_MSG},
+            {validFile, -3d,  INVALID_ALPHA_MSG},
+            {validFile,  4d,  INVALID_ALPHA_MSG},
+            {validFile,  4.8, INVALID_ALPHA_MSG}
         };
         //@formatter:on
     }
@@ -37,7 +37,7 @@ public abstract class FilterServiceDataProvider {
     @DataProvider(name = "blurRegionErrorTestDataProvider")
     public static Object[][] blurRegionErrorTestDataProvider() throws IOException {
         
-        MultipartFile img = UTIL.getResourceMultiPartFile(NM_IMG_TEST);
+        MultipartFile img = UTIL.getPNGMultiPartFile();
         double alpha = 10;
         Region undefined = null;
         Region invalidX = new Region(-1, 20, 20, 20);
@@ -59,7 +59,7 @@ public abstract class FilterServiceDataProvider {
     @DataProvider(name = "grayScaleRegionErrorTestDataProvider")
     public static Object[][] grayScaleRegionErrorTestDataProvider() throws IOException {
         
-        MultipartFile img = UTIL.getResourceMultiPartFile(NM_IMG_TEST);
+        MultipartFile img = UTIL.getPNGMultiPartFile();
         Region undefined = null;
         Region invalidX = new Region(-1, 20, 20, 20);
         Region invalidY = new Region(20, -1, 20, 20);
@@ -81,7 +81,7 @@ public abstract class FilterServiceDataProvider {
     public static Object[][] rgbMoldErrorTestDataProvider() throws IOException {
 
         RgbColor validColor = new RgbColor(100, 100, 100);
-        MultipartFile validFile = UTIL.getResourceMultiPartFile(NM_IMG_TEST);
+        MultipartFile validFile = UTIL.getPNGMultiPartFile();
 
         RgbColor minRInvalid = new RgbColor(-1, 100, 100);
         RgbColor maxRInvalid = new RgbColor(256, 100, 100);
@@ -122,7 +122,7 @@ public abstract class FilterServiceDataProvider {
     @DataProvider(name = "sepiaErrorTestDataProvider")
     public static Object[][] sepiaErrorTestDataProvider() throws IOException {
         
-        MultipartFile img = UTIL.getResourceMultiPartFile(NM_IMG_TEST);
+        MultipartFile img = UTIL.getPNGMultiPartFile();
         Region undefined = null;
         Region invalidX = new Region(-1, 20, 20, 20);
         Region invalidY = new Region(20, -1, 20, 20);
