@@ -130,15 +130,12 @@ public class ManipulateService {
 	public byte[] contrastAndBrightness(MultipartFile file, double alpha, double beta) throws IOException {
 
 		assertcontrastAndBrightness(alpha, beta);
-
 		MultipartFileUtil.assertFile(file);
-
-		String extension = MultipartFileUtil.getExtension(file);
 
 		Mat image = MatUtil.getMat(file.getBytes());
 		Mat contrastAndBrightness = MatUtil.contrastAndBrightness(image, alpha, beta);
 
-		return MatUtil.getBlob(contrastAndBrightness, extension);
+		return MatUtil.getBlob(contrastAndBrightness, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] contrastAndBrightness(MultipartFile file, double alpha, double beta, Region region)
@@ -147,8 +144,6 @@ public class ManipulateService {
 		assertcontrastAndBrightness(alpha, beta);
 		assertRegion(region);
 		MultipartFileUtil.assertFile(file);
-
-		String extension = MultipartFileUtil.getExtension(file);
 
 		Rect rect = MatUtil.regionToRect(region);
 		Mat image = MatUtil.getMat(file.getBytes());
@@ -159,7 +154,7 @@ public class ManipulateService {
 			.copyTo(contrastAndBrightness.submat(rect));
 		//@formatter:on
 
-		return MatUtil.getBlob(contrastAndBrightness, extension);
+		return MatUtil.getBlob(contrastAndBrightness, MultipartFileUtil.getExtension(file));
 	}
 
 	private void assertSaturation(double alpha) {
