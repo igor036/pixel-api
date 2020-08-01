@@ -91,4 +91,22 @@ public class ManipulateServiceUnitTest {
             Assert.assertTrue(ex.getMessage().contains(msgError));
         }
     }
+
+    @Test(dataProvider = "contrastAndBrightnessErrorTestDataProvider", dataProviderClass = ManipulateServiceDataProvider.class)
+    public void contrastAndBrightnessError(MultipartFile file, Double alpha, Double beta, String msgError) throws IOException {
+        try {
+            manipulateServiceMock.contrastAndBrightness(file, alpha, beta);
+        } catch(IllegalArgumentException | BadRequestException ex) {
+            Assert.assertTrue(ex.getMessage().contains(msgError));
+        }
+    }
+
+    @Test(dataProvider = "contrastAndBrightnessRegionErrorTestDataProvider", dataProviderClass = ManipulateServiceDataProvider.class)
+    public void contrastAndBrightnessRegionErrorTest(MultipartFile file, Double alpha, Double beta, Region region, String msgError) throws IOException {
+        try {
+            manipulateServiceMock.contrastAndBrightness(file, alpha, beta, region);
+        } catch(IllegalArgumentException | BadRequestException ex) {
+            Assert.assertTrue(ex.getMessage().contains(msgError));
+        }
+    }
 }

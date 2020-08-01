@@ -47,7 +47,7 @@
 		<artifactId>testng</artifactId>
 		<version>6.8.5</version>
 	</dependency>
-
+	
     <!-- opencv -->
     <dependency>
         <groupId>org.openpnp</groupId>

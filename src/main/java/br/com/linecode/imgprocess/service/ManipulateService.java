@@ -133,18 +133,24 @@ public class ManipulateService {
 
 	public byte[] contrastAndBrightness(MultipartFile file, double alpha, double beta) throws IOException {
 
+		assertcontrastAndBrightness(alpha, beta);
+		
 		MultipartFileUtil.assertFile(file);
+
 		String extension = MultipartFileUtil.getExtension(file);
 
 		Mat image = MatUtil.getMat(file.getBytes());
-		Mat contrastAndBrightness = contrastAndBrightness(image, alpha, beta);
+		Mat contrastAndBrightness = MatUtil.contrastAndBrightness(image, alpha, beta);
 		
 		return MatUtil.getBlob(contrastAndBrightness, extension);
 	}
 
 	public byte[] contrastAndBrightness(MultipartFile file, double alpha, double beta, Region region) throws IOException {
 
+		assertcontrastAndBrightness(alpha, beta);
+		assertRegion(region);
 		MultipartFileUtil.assertFile(file);
+
 		String extension = MultipartFileUtil.getExtension(file);
 
 		Rect rect = MatUtil.regionToRect(region);
@@ -152,15 +158,14 @@ public class ManipulateService {
 		Mat contrastAndBrightness = MatUtil.copy(image);
 
 		//@formatter:off
-		contrastAndBrightness(image.submat(rect), alpha, beta)
+		MatUtil.contrastAndBrightness(image.submat(rect), alpha, beta)
 			.copyTo(contrastAndBrightness.submat(rect));
 		//@formatter:on
 		
 		return MatUtil.getBlob(contrastAndBrightness, extension);
 	}
 
-	private Mat contrastAndBrightness(Mat image, double alpha, double beta) {
-
+	private void assertcontrastAndBrightness(double alpha, double beta) {
 		if (alpha < MIN_CONTRAST_BRIGHTNESS_ALPHA || alpha > MAX_CONTRAST_BRIGHTNESS_ALPHA) {
 			throw new BadRequestException(INVALID_CONTRAST_BRIGHTNESS_ALPHA_MSG);
 		}
@@ -168,8 +173,6 @@ public class ManipulateService {
 		if (beta < MIN_CONTRAST_BRIGHTNESS_BETA || beta > MAX_CONTRAST_BRIGHTNESS_BETA) {
 			throw new BadRequestException(INVALID_CONTRAST_BRIGHTNESS_BETA_MSG);
 		}
-		
-		return MatUtil.contrastAndBrightness(image, alpha, beta);
 	}
 	
 	private void assertDimenssion(Dimenssion dimenssion) {
