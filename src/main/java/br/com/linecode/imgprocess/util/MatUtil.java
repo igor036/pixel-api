@@ -114,30 +114,6 @@ public abstract class MatUtil {
 	}
 
 	/**
-	 * 	Convert a region of image to a grayscale region
-	 * 
-	 *  @param image  {@link Mat}
-	 *  @param region {@link Region}
-	 *  @return       {@link Mat}	   
-	 *  @throws IOException
-	 */
-	public static Mat grayScale(Mat image, Region region) throws IOException {
-
-		assertRegion(image, region);
-
-		Rect rect = regionToRect(region);
-		Mat processedImage = copy(image);
-		Mat grayScaleRegion = image.submat(rect);
-
-		Imgproc.cvtColor(grayScaleRegion, grayScaleRegion, Imgproc.COLOR_BGR2GRAY);
-		Imgproc.cvtColor(grayScaleRegion, grayScaleRegion, Imgproc.COLOR_GRAY2BGR);
-
-		grayScaleRegion.copyTo(processedImage.submat(rect));
-		return processedImage;
-
-	}
-
-	/**
 	 * 	Convert image to a sepia image
 	 * 
 	 *  @param image  {@link Mat}

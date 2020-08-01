@@ -85,7 +85,6 @@ public class FilterService {
         
         Mat foreground = MatUtil.getMat(file.getBytes());
         Mat background = MatUtil.copy(foreground);
-        String extension = MultipartFileUtil.getExtension(file);
 
         alpha = alpha > 5 ? alpha : DEFAULT_BLUR_ALPHA;
 
@@ -94,8 +93,7 @@ public class FilterService {
         foreground = MatUtil.decreaseSize(foreground, DEFAULTL_RESIZE_PERCENTAGE);
 
         Mat blurMold = MatUtil.putForeground(background, foreground);
-
-        return MatUtil.getBlob(blurMold, extension);
+        return MatUtil.getBlob(blurMold, MultipartFileUtil.getExtension(file));
     }
 
     public byte[] grayScale(MultipartFile file) throws IOException {
@@ -104,9 +102,8 @@ public class FilterService {
         
         Mat image = MatUtil.getMat(file.getBytes());
         Mat grayScale = MatUtil.grayScale(image);
-        String extension = MultipartFileUtil.getExtension(file);
 
-        return MatUtil.getBlob(grayScale, extension);
+        return MatUtil.getBlob(grayScale, MultipartFileUtil.getExtension(file));
     }
 
     public byte[] grayScale(MultipartFile file, Region region) throws IOException {
@@ -114,11 +111,12 @@ public class FilterService {
         MultipartFileUtil.assertFile(file);
         assertRegion(region);
         
+        Rect rect = MatUtil.regionToRect(region);
         Mat image = MatUtil.getMat(file.getBytes());
-        Mat grayScale = MatUtil.grayScale(image, region);
-        String extension = MultipartFileUtil.getExtension(file);
+        Mat grayScale = MatUtil.copy(image);
 
-        return MatUtil.getBlob(grayScale, extension);
+        MatUtil.grayScale(image.submat(rect)).copyTo(grayScale.submat(rect));
+        return MatUtil.getBlob(grayScale, MultipartFileUtil.getExtension(file));
 
     }
 
