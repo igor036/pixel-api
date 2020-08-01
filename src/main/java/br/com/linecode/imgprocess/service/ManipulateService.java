@@ -21,9 +21,13 @@ public class ManipulateService {
 	private static final String INVALID_DIMENSSION_MSG = "Enter a new dimension for image.";
 	private static final String INVALID_REGION_MSG = "Enter a region of image.";
 	private static final String INVALID_BRIGHTNESS_ALPHA_MSG = "The brightness alpha value should be  >= 0.1 and <= 3.0";
+	private static final String INVALID_SATURARION_ALPHA_MSG = "The saturation alpha value should be  >= 0.1 and <= 3.0";
 
 	private static final double MIN_BRIGHTNESS_ALPHA = 0.1d;
 	private static final double MAX_BRIGHTNESS_ALPHA = 3d;
+
+	private static final double MIN_SATURATION_ALPHA = 0.1d;
+	private static final double MAX_SATURATION_ALPHA = 3d;
 	
 	@Autowired
 	private ValidatorService validatorService; 
@@ -83,6 +87,37 @@ public class ManipulateService {
 		MultipartFileUtil.assertFile(file);
 		Mat image = MatUtil.getMat(file.getBytes());
 		Mat brightness = MatUtil.brightness(image, alpha, region);
+		String extension = MultipartFileUtil.getExtension(file);
+
+		return MatUtil.getBlob(brightness, extension);
+	}
+
+	public byte[] saturation(MultipartFile file, double alpha) throws IOException {
+
+		if (alpha < MIN_SATURATION_ALPHA || alpha > MAX_SATURATION_ALPHA) {
+			throw new BadRequestException(INVALID_SATURARION_ALPHA_MSG);
+		}
+		
+
+		MultipartFileUtil.assertFile(file);
+		Mat image = MatUtil.getMat(file.getBytes());
+		Mat brightness = MatUtil.saturation(image, alpha);
+		String extension = MultipartFileUtil.getExtension(file);
+
+		return MatUtil.getBlob(brightness, extension);
+	}
+
+	public byte[] saturation(MultipartFile file, double alpha, Region region) throws IOException {
+
+		if (alpha < MIN_SATURATION_ALPHA || alpha > MAX_SATURATION_ALPHA) {
+			throw new BadRequestException(INVALID_SATURARION_ALPHA_MSG);
+		}
+		
+		assertRegion(region);
+
+		MultipartFileUtil.assertFile(file);
+		Mat image = MatUtil.getMat(file.getBytes());
+		Mat brightness = MatUtil.saturation(image, alpha, region);
 		String extension = MultipartFileUtil.getExtension(file);
 
 		return MatUtil.getBlob(brightness, extension);

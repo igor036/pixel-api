@@ -44,4 +44,16 @@ public class ManipulateController {
 			throws IOException {
 		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.brightness(file, alpha, region), response);
 	}
+
+	@GetMapping("saturation")
+	public void saturation(@RequestPart MultipartFile file, double alpha, HttpServletResponse response)
+			throws IOException {
+		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.saturation(file, alpha), response);
+	}
+
+	@GetMapping("saturation/region")
+	public void saturation(@RequestPart MultipartFile file, double alpha, Region region, HttpServletResponse response)
+			throws IOException {
+		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.saturation(file, alpha, region), response);
+	}
 }

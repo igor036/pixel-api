@@ -369,6 +369,39 @@ public abstract class MatUtil {
 		return brightnes;
 	}
 
+	public static Mat saturation(Mat image, double alpha) {
+
+		Mat hsv = new Mat();
+		Mat saturation = new Mat();
+		Imgproc.cvtColor(image, hsv, Imgproc.COLOR_BGR2HSV);
+		
+		for (int x = 0; x < hsv.rows(); x++) {
+			for (int y = 0; y < hsv.cols(); y++) {
+
+				double[] pixel = hsv.get(x, y);
+				pixel[1] *= alpha;
+				hsv.put(x, y, pixel);
+
+			}
+		}
+
+		Imgproc.cvtColor(hsv, saturation, Imgproc.COLOR_HSV2BGR);
+		return saturation;
+	}
+
+	public static Mat saturation(Mat image, double alpha, Region region) { 
+
+		assertRegion(image, region);
+
+		Rect rect = regionToRect(region);
+		Mat saturation = copy(image);
+		Mat saturarionRegion = saturation.submat(rect);
+		
+		saturation(saturarionRegion, alpha).copyTo(saturation.submat(rect));
+
+		return saturation;
+	}
+
 	public static Mat copy(Mat image) {
 		Mat copy = new Mat();
 		image.copyTo(copy);
