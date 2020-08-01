@@ -73,4 +73,22 @@ public class ManipulateServiceUnitTest {
             Assert.assertTrue(ex.getMessage().contains(msgError));
         }
     }
+
+    @Test(dataProvider = "saturationErrorTestDataProvider", dataProviderClass = ManipulateServiceDataProvider.class)
+    public void saturationErrorTest(MultipartFile file, Double alpha, String msgError) throws IOException {
+        try {
+            manipulateServiceMock.saturation(file, alpha);
+        } catch(IllegalArgumentException | BadRequestException ex) {
+            Assert.assertTrue(ex.getMessage().contains(msgError));
+        }
+    }
+
+    @Test(dataProvider = "saturationRegionErrorTestDataProvider", dataProviderClass = ManipulateServiceDataProvider.class)
+    public void saturationRegionErrorTest(MultipartFile file, Double alpha, Region region, String msgError) throws IOException {
+        try {
+            manipulateServiceMock.saturation(file, alpha, region);
+        } catch(IllegalArgumentException | BadRequestException ex) {
+            Assert.assertTrue(ex.getMessage().contains(msgError));
+        }
+    }
 }

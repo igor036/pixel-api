@@ -98,7 +98,6 @@ public class ManipulateService {
 			throw new BadRequestException(INVALID_SATURARION_ALPHA_MSG);
 		}
 		
-
 		MultipartFileUtil.assertFile(file);
 		Mat image = MatUtil.getMat(file.getBytes());
 		Mat brightness = MatUtil.saturation(image, alpha);
