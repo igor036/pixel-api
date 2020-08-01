@@ -418,13 +418,31 @@ public abstract class MatUtil {
 		return saturation;
 	}
 
+	public static Mat contrastAndBrightness(Mat image, double alpha, double beta) {
+	
+		Mat contrastAndBrightness = copy(image);
+
+		for (int x = 0; x < contrastAndBrightness.rows(); x++) {
+			for (int y = 0; y < contrastAndBrightness.cols(); y++) {
+
+				double[] pixel = contrastAndBrightness.get(x, y);
+				for (int i = 0; i < 3; i++)
+					pixel[i] = (int)(alpha * (pixel[i] + beta));
+					
+				contrastAndBrightness.put(x, y, pixel);
+			}
+		}
+
+		return contrastAndBrightness;
+	}
+
 	public static Mat copy(Mat image) {
 		Mat copy = new Mat();
 		image.copyTo(copy);
 		return copy;
 	}
 
-	private static Rect regionToRect(Region region) {
+	public static Rect regionToRect(Region region) {
 		Point a = new Point(region.getPointX(), region.getPointY());
 		Point b = new Point(region.getPointX() + region.getWidth(), region.getPointY() + region.getHeight());
 		return new Rect(a, b);

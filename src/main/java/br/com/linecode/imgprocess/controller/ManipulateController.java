@@ -56,4 +56,16 @@ public class ManipulateController {
 			throws IOException {
 		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.saturation(file, alpha, region), response);
 	}
+
+	@GetMapping("contrast-brightness")
+	public void contrastAndBrightness(@RequestPart MultipartFile file, double alpha, double beta, HttpServletResponse response)
+			throws IOException {
+		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.contrastAndBrightness(file, alpha, beta), response);
+	}
+
+	@GetMapping("contrast-brightness/region")
+	public void contrastAndBrightness(@RequestPart MultipartFile file, double alpha, double beta, Region region, HttpServletResponse response)
+			throws IOException {
+		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.contrastAndBrightness(file, alpha, beta, region), response);
+	}
 }
