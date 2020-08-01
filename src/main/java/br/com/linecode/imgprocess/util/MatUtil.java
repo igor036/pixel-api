@@ -320,6 +320,55 @@ public abstract class MatUtil {
 		return rgbColor;
 	}
 
+	/**
+	 * Change the brightness of image.
+	 * 
+	 * @param image {@link Mat}
+	 * @param alpha {@link double}
+	 * @return {@link Mat}
+	 */
+	public static Mat brightness(Mat image, double alpha) {
+
+		Mat hsv = new Mat();
+		Mat brightness = new Mat();
+		Imgproc.cvtColor(image, hsv, Imgproc.COLOR_BGR2HSV);
+		
+		for (int x = 0; x < hsv.rows(); x++) {
+			for (int y = 0; y < hsv.cols(); y++) {
+
+				double[] pixel = hsv.get(x, y);
+				pixel[2] *= alpha;
+				hsv.put(x, y, pixel);
+
+			}
+		}
+
+		Imgproc.cvtColor(hsv, brightness, Imgproc.COLOR_HSV2BGR);
+		return brightness;
+	}
+
+	/**
+	 * 
+	 * Change the brightness in image region.
+	 * 
+	 * @param image {@link Mat}
+	 * @param alpha {@link double}
+	 * @param region {@link Region}
+	 * @return
+	 */
+	public static Mat brightness(Mat image, double alpha, Region region) {
+
+		assertRegion(image, region);
+
+		Rect rect = regionToRect(region);
+		Mat brightnes = copy(image);
+		Mat brightnesRegion = brightnes.submat(rect);
+		
+		brightness(brightnesRegion, alpha).copyTo(brightnes.submat(rect));
+
+		return brightnes;
+	}
+
 	public static Mat copy(Mat image) {
 		Mat copy = new Mat();
 		image.copyTo(copy);

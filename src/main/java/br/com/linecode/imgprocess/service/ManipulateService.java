@@ -20,6 +20,10 @@ public class ManipulateService {
 	
 	private static final String INVALID_DIMENSSION_MSG = "Enter a new dimension for image.";
 	private static final String INVALID_REGION_MSG = "Enter a region for crop the image.";
+	private static final String INVALID_BRIGHTNESS_ALPHA = "The brightness alpha value should be  >= 0.1 and <= 3.0";
+
+	private static final double MIN_BRIGHTNESS_ALPHA = 0.1d;
+	private static final double MAX_BRIGHTNESS_ALPHA = 3d;
 	
 	@Autowired
 	private ValidatorService validatorService; 
@@ -52,6 +56,36 @@ public class ManipulateService {
 		} catch (IllegalArgumentException e) {
 			throw new BadRequestException(e.getMessage());
 		}
+	}
+
+	public byte[] brightness(MultipartFile file, double alpha) throws IOException {
+
+		if (alpha < MIN_BRIGHTNESS_ALPHA || alpha > MAX_BRIGHTNESS_ALPHA) {
+			throw new BadRequestException(INVALID_BRIGHTNESS_ALPHA);
+		}
+
+		MultipartFileUtil.assertFile(file);
+		Mat image = MatUtil.getMat(file.getBytes());
+		Mat brightness = MatUtil.brightness(image, alpha);
+		String extension = MultipartFileUtil.getExtension(file);
+
+		return MatUtil.getBlob(brightness, extension);
+	}
+
+	public byte[] brightness(MultipartFile file, double alpha, Region region) throws IOException {
+
+		if (alpha < MIN_BRIGHTNESS_ALPHA || alpha > MAX_BRIGHTNESS_ALPHA) {
+			throw new BadRequestException(INVALID_BRIGHTNESS_ALPHA);
+		}
+
+		assertRegion(region);
+
+		MultipartFileUtil.assertFile(file);
+		Mat image = MatUtil.getMat(file.getBytes());
+		Mat brightness = MatUtil.brightness(image, alpha, region);
+		String extension = MultipartFileUtil.getExtension(file);
+
+		return MatUtil.getBlob(brightness, extension);
 	}
 	
 	private void assertDimenssion(Dimenssion dimenssion) {
