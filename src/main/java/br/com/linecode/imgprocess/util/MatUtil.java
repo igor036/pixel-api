@@ -369,6 +369,13 @@ public abstract class MatUtil {
 		return brightnes;
 	}
 
+	/**
+	 * Change the saturagion of image.
+	 * 
+	 * @param image {@link Mat}
+	 * @param alpha {@link double}
+	 * @return {@link Mat}
+	 */
 	public static Mat saturation(Mat image, double alpha) {
 
 		Mat hsv = new Mat();
@@ -389,6 +396,15 @@ public abstract class MatUtil {
 		return saturation;
 	}
 
+	/**
+	 * 
+	 * Change the saturation in image region.
+	 * 
+	 * @param image {@link Mat}
+	 * @param alpha {@link double}
+	 * @param region {@link Region}
+	 * @return
+	 */
 	public static Mat saturation(Mat image, double alpha, Region region) { 
 
 		assertRegion(image, region);
