@@ -374,28 +374,6 @@ public abstract class MatUtil {
 		return saturation;
 	}
 
-	/**
-	 * 
-	 * Change the saturation in image region.
-	 * 
-	 * @param image {@link Mat}
-	 * @param alpha {@link double}
-	 * @param region {@link Region}
-	 * @return
-	 */
-	public static Mat saturation(Mat image, double alpha, Region region) { 
-
-		assertRegion(image, region);
-
-		Rect rect = regionToRect(region);
-		Mat saturation = copy(image);
-		Mat saturarionRegion = saturation.submat(rect);
-		
-		saturation(saturarionRegion, alpha).copyTo(saturation.submat(rect));
-
-		return saturation;
-	}
-
 	public static Mat contrastAndBrightness(Mat image, double alpha, double beta) {
 	
 		Mat contrastAndBrightness = copy(image);

@@ -48,9 +48,8 @@ public class ManipulateService {
 
 		Mat image = MatUtil.getMat(file.getBytes());
 		Mat resize = MatUtil.resize(image, dimenssion);
-		String extension = MultipartFileUtil.getExtension(file);
 
-		return MatUtil.getBlob(resize, extension);
+		return MatUtil.getBlob(resize, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] crop(MultipartFile file, Region region) throws IOException {
@@ -62,9 +61,8 @@ public class ManipulateService {
 
 			Mat image = MatUtil.getMat(file.getBytes());
 			Mat crop = MatUtil.crop(image, region);
-			String extension = MultipartFileUtil.getExtension(file);
 
-			return MatUtil.getBlob(crop, extension);
+			return MatUtil.getBlob(crop, MultipartFileUtil.getExtension(file));
 
 		} catch (IllegalArgumentException e) {
 			throw new BadRequestException(e.getMessage());
@@ -78,9 +76,8 @@ public class ManipulateService {
 
 		Mat image = MatUtil.getMat(file.getBytes());
 		Mat brightness = MatUtil.brightness(image, alpha);
-		String extension = MultipartFileUtil.getExtension(file);
 
-		return MatUtil.getBlob(brightness, extension);
+		return MatUtil.getBlob(brightness, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] brightness(MultipartFile file, double alpha, Region region) throws IOException {
@@ -103,32 +100,31 @@ public class ManipulateService {
 
 	public byte[] saturation(MultipartFile file, double alpha) throws IOException {
 
-		if (alpha < MIN_SATURATION_ALPHA || alpha > MAX_SATURATION_ALPHA) {
-			throw new BadRequestException(INVALID_SATURARION_ALPHA_MSG);
-		}
-
+		assertSaturation(alpha);
 		MultipartFileUtil.assertFile(file);
+		
 		Mat image = MatUtil.getMat(file.getBytes());
 		Mat brightness = MatUtil.saturation(image, alpha);
-		String extension = MultipartFileUtil.getExtension(file);
 
-		return MatUtil.getBlob(brightness, extension);
+		return MatUtil.getBlob(brightness, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] saturation(MultipartFile file, double alpha, Region region) throws IOException {
 
-		if (alpha < MIN_SATURATION_ALPHA || alpha > MAX_SATURATION_ALPHA) {
-			throw new BadRequestException(INVALID_SATURARION_ALPHA_MSG);
-		}
-
+		assertSaturation(alpha);
 		assertRegion(region);
-
 		MultipartFileUtil.assertFile(file);
-		Mat image = MatUtil.getMat(file.getBytes());
-		Mat brightness = MatUtil.saturation(image, alpha, region);
-		String extension = MultipartFileUtil.getExtension(file);
 
-		return MatUtil.getBlob(brightness, extension);
+		Rect rect = MatUtil.regionToRect(region);
+		Mat image = MatUtil.getMat(file.getBytes());
+		Mat saturation = MatUtil.copy(image);
+
+		//@formatter:off
+		MatUtil.saturation(image.submat(rect), alpha)
+			.copyTo(saturation.submat(rect));
+		//@formatter:on
+
+		return MatUtil.getBlob(saturation, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] contrastAndBrightness(MultipartFile file, double alpha, double beta) throws IOException {
@@ -164,6 +160,12 @@ public class ManipulateService {
 		//@formatter:on
 
 		return MatUtil.getBlob(contrastAndBrightness, extension);
+	}
+
+	private void assertSaturation(double alpha) {
+		if (alpha < MIN_SATURATION_ALPHA || alpha > MAX_SATURATION_ALPHA) {
+			throw new BadRequestException(INVALID_SATURARION_ALPHA_MSG);
+		}
 	}
 
 	private void assertbrightness(double alpha) {
