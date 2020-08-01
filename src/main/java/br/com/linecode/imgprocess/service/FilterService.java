@@ -3,6 +3,7 @@ package br.com.linecode.imgprocess.service;
 import java.io.IOException;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -34,9 +35,8 @@ public class FilterService {
 
         Mat image = MatUtil.getMat(file.getBytes());
         Mat sepia = MatUtil.sepia(image);
-        String extension = MultipartFileUtil.getExtension(file);
 
-        return MatUtil.getBlob(sepia, extension);
+        return MatUtil.getBlob(sepia, MultipartFileUtil.getExtension(file));
 
     }
 
@@ -44,13 +44,17 @@ public class FilterService {
 
         MultipartFileUtil.assertFile(file);
         assertRegion(region);
-        validatorService.assertModel(region);
 
+        Rect rect = MatUtil.regionToRect(region);
         Mat image = MatUtil.getMat(file.getBytes());
-        Mat sepia = MatUtil.sepia(image, region);
-        String extension = MultipartFileUtil.getExtension(file);
+        Mat sepia = MatUtil.copy(image);
 
-        return MatUtil.getBlob(sepia, extension);
+        //@formatter:off
+        MatUtil.sepia(image.submat(rect))
+            .copyTo(sepia.submat(rect));
+        //@formatter:on
+
+        return MatUtil.getBlob(sepia, MultipartFileUtil.getExtension(file));
 
     }
 
