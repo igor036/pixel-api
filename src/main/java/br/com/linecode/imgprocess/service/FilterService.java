@@ -48,12 +48,8 @@ public class FilterService {
         Rect rect = MatUtil.regionToRect(region);
         Mat image = MatUtil.getMat(file.getBytes());
         Mat sepia = MatUtil.copy(image);
-
-        //@formatter:off
-        MatUtil.sepia(image.submat(rect))
-            .copyTo(sepia.submat(rect));
-        //@formatter:on
-
+        
+        MatUtil.sepia(image.submat(rect)).copyTo(sepia.submat(rect));
         return MatUtil.getBlob(sepia, MultipartFileUtil.getExtension(file));
 
     }
@@ -61,35 +57,26 @@ public class FilterService {
     public byte[] blur(MultipartFile file, double alpha) throws IOException {
         
         MultipartFileUtil.assertFile(file);
+        assertBlur(alpha);
         
-        if (alpha >= 5) {
+        Mat image = MatUtil.getMat(file.getBytes());
+        Mat blur = MatUtil.blur(image, alpha);
 
-            Mat image = MatUtil.getMat(file.getBytes());
-            Mat blur = MatUtil.blur(image, alpha);
-            String extension = MultipartFileUtil.getExtension(file);
-
-            return MatUtil.getBlob(blur, extension);
-            
-        }
-
-        throw new BadRequestException(INVALID_ALPHA);
+        return MatUtil.getBlob(blur, MultipartFileUtil.getExtension(file));
     }
     
     public byte[] blur(MultipartFile file, double alpha, Region region) throws IOException {
         
         MultipartFileUtil.assertFile(file);
+        assertBlur(alpha);
         assertRegion(region);
 
-        if (alpha >= 5) {
+        Rect rect = MatUtil.regionToRect(region);
+        Mat image = MatUtil.getMat(file.getBytes());
+        Mat blur = MatUtil.copy(image);
 
-            Mat image = MatUtil.getMat(file.getBytes());
-            Mat blur = MatUtil.blur(image, alpha, region);
-            String extension = MultipartFileUtil.getExtension(file);
-
-            return MatUtil.getBlob(blur, extension);
-        }
-
-        throw new BadRequestException(INVALID_ALPHA);
+        MatUtil.blur(image.submat(rect), alpha).copyTo(blur.submat(rect));
+        return MatUtil.getBlob(blur, MultipartFileUtil.getExtension(file));
     }
 
     public byte[] blurMold(MultipartFile file, double alpha) throws IOException{
@@ -193,5 +180,11 @@ public class FilterService {
     private void assertRegion(Region region) {
 		Assert.notNull(region, INVALID_REGION_MSG);
 		validatorService.assertModel(region);
-	}
+    }
+    
+    private void assertBlur(double alpha) {
+        if (alpha < 5) {
+            throw new BadRequestException(INVALID_ALPHA);
+        }
+    }
 }   
