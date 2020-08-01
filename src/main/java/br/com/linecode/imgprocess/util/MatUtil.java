@@ -348,28 +348,6 @@ public abstract class MatUtil {
 	}
 
 	/**
-	 * 
-	 * Change the brightness in image region.
-	 * 
-	 * @param image {@link Mat}
-	 * @param alpha {@link double}
-	 * @param region {@link Region}
-	 * @return
-	 */
-	public static Mat brightness(Mat image, double alpha, Region region) {
-
-		assertRegion(image, region);
-
-		Rect rect = regionToRect(region);
-		Mat brightnes = copy(image);
-		Mat brightnesRegion = brightnes.submat(rect);
-		
-		brightness(brightnesRegion, alpha).copyTo(brightnes.submat(rect));
-
-		return brightnes;
-	}
-
-	/**
 	 * Change the saturagion of image.
 	 * 
 	 * @param image {@link Mat}
