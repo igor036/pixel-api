@@ -47,9 +47,9 @@ public class ManipulateService {
 		assertDimenssion(dimenssion);
 
 		Mat image = MatUtil.getMat(file.getBytes());
-		Mat resize = MatUtil.resize(image, dimenssion);
+		image = MatUtil.resize(image, dimenssion);
 
-		return MatUtil.getBlob(resize, MultipartFileUtil.getExtension(file));
+		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] crop(MultipartFile file, Region region) throws IOException {
@@ -60,9 +60,9 @@ public class ManipulateService {
 		try {
 
 			Mat image = MatUtil.getMat(file.getBytes());
-			Mat crop = MatUtil.crop(image, region);
+			image = MatUtil.crop(image, region);
 
-			return MatUtil.getBlob(crop, MultipartFileUtil.getExtension(file));
+			return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 
 		} catch (IllegalArgumentException e) {
 			throw new BadRequestException(e.getMessage());
@@ -75,9 +75,9 @@ public class ManipulateService {
 		MultipartFileUtil.assertFile(file);
 
 		Mat image = MatUtil.getMat(file.getBytes());
-		Mat brightness = MatUtil.brightness(image, alpha);
+		image = MatUtil.brightness(image, alpha);
 
-		return MatUtil.getBlob(brightness, MultipartFileUtil.getExtension(file));
+		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] brightness(MultipartFile file, double alpha, Region region) throws IOException {
@@ -88,14 +88,9 @@ public class ManipulateService {
 
 		Rect rect = MatUtil.regionToRect(region);
 		Mat image = MatUtil.getMat(file.getBytes());
-		Mat brightness = MatUtil.copy(image);
 
-		//@formatter:off
-		MatUtil.brightness(image.submat(rect), alpha)
-			.copyTo(brightness.submat(rect));
-		//@formatter:on
-
-		return MatUtil.getBlob(brightness, MultipartFileUtil.getExtension(file));
+		MatUtil.brightness(image.submat(rect), alpha).copyTo(image.submat(rect));
+		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] saturation(MultipartFile file, double alpha) throws IOException {
@@ -104,9 +99,9 @@ public class ManipulateService {
 		MultipartFileUtil.assertFile(file);
 		
 		Mat image = MatUtil.getMat(file.getBytes());
-		Mat brightness = MatUtil.saturation(image, alpha);
+		image = MatUtil.saturation(image, alpha);
 
-		return MatUtil.getBlob(brightness, MultipartFileUtil.getExtension(file));
+		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] saturation(MultipartFile file, double alpha, Region region) throws IOException {
@@ -117,14 +112,9 @@ public class ManipulateService {
 
 		Rect rect = MatUtil.regionToRect(region);
 		Mat image = MatUtil.getMat(file.getBytes());
-		Mat saturation = MatUtil.copy(image);
 
-		//@formatter:off
-		MatUtil.saturation(image.submat(rect), alpha)
-			.copyTo(saturation.submat(rect));
-		//@formatter:on
-
-		return MatUtil.getBlob(saturation, MultipartFileUtil.getExtension(file));
+		MatUtil.saturation(image.submat(rect), alpha).copyTo(image.submat(rect));
+		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] contrastAndBrightness(MultipartFile file, double alpha, double beta) throws IOException {
@@ -133,9 +123,9 @@ public class ManipulateService {
 		MultipartFileUtil.assertFile(file);
 
 		Mat image = MatUtil.getMat(file.getBytes());
-		Mat contrastAndBrightness = MatUtil.contrastAndBrightness(image, alpha, beta);
+		image = MatUtil.contrastAndBrightness(image, alpha, beta);
 
-		return MatUtil.getBlob(contrastAndBrightness, MultipartFileUtil.getExtension(file));
+		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 	}
 
 	public byte[] contrastAndBrightness(MultipartFile file, double alpha, double beta, Region region)
@@ -147,14 +137,13 @@ public class ManipulateService {
 
 		Rect rect = MatUtil.regionToRect(region);
 		Mat image = MatUtil.getMat(file.getBytes());
-		Mat contrastAndBrightness = MatUtil.copy(image);
 
 		//@formatter:off
 		MatUtil.contrastAndBrightness(image.submat(rect), alpha, beta)
-			.copyTo(contrastAndBrightness.submat(rect));
+			.copyTo(image.submat(rect));
 		//@formatter:on
 
-		return MatUtil.getBlob(contrastAndBrightness, MultipartFileUtil.getExtension(file));
+		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 	}
 
 	private void assertSaturation(double alpha) {

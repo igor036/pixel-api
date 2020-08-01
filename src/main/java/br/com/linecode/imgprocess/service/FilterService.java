@@ -34,9 +34,9 @@ public class FilterService {
         MultipartFileUtil.assertFile(file);
 
         Mat image = MatUtil.getMat(file.getBytes());
-        Mat sepia = MatUtil.sepia(image);
+        image = MatUtil.sepia(image);
 
-        return MatUtil.getBlob(sepia, MultipartFileUtil.getExtension(file));
+        return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 
     }
 
@@ -47,10 +47,9 @@ public class FilterService {
 
         Rect rect = MatUtil.regionToRect(region);
         Mat image = MatUtil.getMat(file.getBytes());
-        Mat sepia = MatUtil.copy(image);
         
-        MatUtil.sepia(image.submat(rect)).copyTo(sepia.submat(rect));
-        return MatUtil.getBlob(sepia, MultipartFileUtil.getExtension(file));
+        MatUtil.sepia(image.submat(rect)).copyTo(image.submat(rect));
+        return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 
     }
 
@@ -60,9 +59,9 @@ public class FilterService {
         assertBlur(alpha);
         
         Mat image = MatUtil.getMat(file.getBytes());
-        Mat blur = MatUtil.blur(image, alpha);
+        image = MatUtil.blur(image, alpha);
 
-        return MatUtil.getBlob(blur, MultipartFileUtil.getExtension(file));
+        return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
     }
     
     public byte[] blur(MultipartFile file, double alpha, Region region) throws IOException {
@@ -73,10 +72,9 @@ public class FilterService {
 
         Rect rect = MatUtil.regionToRect(region);
         Mat image = MatUtil.getMat(file.getBytes());
-        Mat blur = MatUtil.copy(image);
 
-        MatUtil.blur(image.submat(rect), alpha).copyTo(blur.submat(rect));
-        return MatUtil.getBlob(blur, MultipartFileUtil.getExtension(file));
+        MatUtil.blur(image.submat(rect), alpha).copyTo(image.submat(rect));
+        return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
     }
 
     public byte[] blurMold(MultipartFile file, double alpha) throws IOException{
@@ -101,9 +99,9 @@ public class FilterService {
         MultipartFileUtil.assertFile(file);
         
         Mat image = MatUtil.getMat(file.getBytes());
-        Mat grayScale = MatUtil.grayScale(image);
+        image = MatUtil.grayScale(image);
 
-        return MatUtil.getBlob(grayScale, MultipartFileUtil.getExtension(file));
+        return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
     }
 
     public byte[] grayScale(MultipartFile file, Region region) throws IOException {
@@ -113,10 +111,10 @@ public class FilterService {
         
         Rect rect = MatUtil.regionToRect(region);
         Mat image = MatUtil.getMat(file.getBytes());
-        Mat grayScale = MatUtil.copy(image);
+        image = MatUtil.copy(image);
 
-        MatUtil.grayScale(image.submat(rect)).copyTo(grayScale.submat(rect));
-        return MatUtil.getBlob(grayScale, MultipartFileUtil.getExtension(file));
+        MatUtil.grayScale(image.submat(rect)).copyTo(image.submat(rect));
+        return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 
     }
 
