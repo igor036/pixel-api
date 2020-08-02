@@ -15,6 +15,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import br.com.linecode.imgprocess.model.Dimenssion;
+import br.com.linecode.imgprocess.model.HsvColorChange;
 import br.com.linecode.imgprocess.model.Region;
 import br.com.linecode.shared.excpetion.BadRequestException;
 import br.com.linecode.shared.service.ValidatorService;
@@ -105,6 +106,24 @@ public class ManipulateServiceUnitTest {
     public void contrastAndBrightnessRegionErrorTest(MultipartFile file, Double alpha, Double beta, Region region, String msgError) throws IOException {
         try {
             manipulateServiceMock.contrastAndBrightness(file, alpha, beta, region);
+        } catch(IllegalArgumentException | BadRequestException ex) {
+            Assert.assertTrue(ex.getMessage().contains(msgError));
+        }
+    }
+
+    @Test(dataProvider = "colorChangeErrorTestDataProvider", dataProviderClass = ManipulateServiceDataProvider.class)
+    public void colorChangeErrorTes(MultipartFile file, HsvColorChange colorChange, String msgError) throws IOException {
+        try {
+            manipulateServiceMock.colorChange(file, colorChange);
+        } catch(IllegalArgumentException | BadRequestException ex) {
+            Assert.assertTrue(ex.getMessage().contains(msgError));
+        }
+    }
+
+    @Test(dataProvider = "colorChangeRegionErrorTestDataProvider", dataProviderClass = ManipulateServiceDataProvider.class)
+    public void colorChangeRegionErrorTes(MultipartFile file, HsvColorChange colorChange, Region region, String msgError) throws IOException {
+        try {
+            manipulateServiceMock.colorChange(file, colorChange, region);
         } catch(IllegalArgumentException | BadRequestException ex) {
             Assert.assertTrue(ex.getMessage().contains(msgError));
         }

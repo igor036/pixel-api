@@ -22,6 +22,7 @@ public class ManipulateService {
 
 	private static final String INVALID_DIMENSSION_MSG = "Enter a new dimension for image.";
 	private static final String INVALID_REGION_MSG = "Enter a region of image.";
+	private static final String INVALID_COLOR_CHANGE_MSG = "Enter a color change porps.";
 	private static final String INVALID_BRIGHTNESS_ALPHA_MSG = "The brightness alpha value should be  >= 0.1 and <= 3.0";
 	private static final String INVALID_SATURARION_ALPHA_MSG = "The saturation alpha value should be  >= 0.1 and <= 3.0";
 	private static final String INVALID_CONTRAST_BRIGHTNESS_ALPHA_MSG = "The brightnewss and contrast alpha value should be  >= 0.1 and <= 3.0";
@@ -150,7 +151,7 @@ public class ManipulateService {
 	public byte[] colorChange(MultipartFile file, HsvColorChange colorChange) throws IOException {
 
 		MultipartFileUtil.assertFile(file);
-		validatorService.assertModel(colorChange);
+		assertHsvColorChange(colorChange);
 
 		Mat image = MatUtil.getMat(file.getBytes());
 		image = MatUtil.colorChange(image, colorChange);
@@ -162,7 +163,7 @@ public class ManipulateService {
 
 		MultipartFileUtil.assertFile(file);
 		assertRegion(region);
-		validatorService.assertModel(colorChange);
+		assertHsvColorChange(colorChange);
 
 		Rect rect = MatUtil.regionToRect(region);
 		Mat image = MatUtil.getMat(file.getBytes());
@@ -201,5 +202,10 @@ public class ManipulateService {
 	private void assertRegion(Region region) {
 		Assert.notNull(region, INVALID_REGION_MSG);
 		validatorService.assertModel(region);
+	}
+
+	private void assertHsvColorChange(HsvColorChange colorChange) {
+		Assert.notNull(colorChange, INVALID_COLOR_CHANGE_MSG);
+		validatorService.assertModel(colorChange);
 	}
 }

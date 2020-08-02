@@ -6,15 +6,15 @@ import javax.validation.constraints.Min;
 public class HsvColorChange {
 
     @Min(value = 0, message = "Min value for porp minHue is 0.")
-    @Max(value = 179, message = "max value for porp minHue is 179.")
+    @Max(value = 179, message = "Max value for porp minHue is 179.")
     private int minHue;
 
     @Min(value = 0, message = "Min value for porp maxHue is 0.")
-    @Max(value = 179, message = "max value for porp maxHue is 179.")
+    @Max(value = 179, message = "Max value for porp maxHue is 179.")
     private int maxHue;
 
     @Min(value = 0, message = "Min value for porp newHue is 0.")
-    @Max(value = 179, message = "max value for porp newHue is 179.")
+    @Max(value = 179, message = "Max value for porp newHue is 179.")
     private int newHue;
 
     private double saturationAdjustment;
