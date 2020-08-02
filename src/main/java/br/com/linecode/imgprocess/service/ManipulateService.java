@@ -158,6 +158,19 @@ public class ManipulateService {
 		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 	}
 
+	public byte[] colorChange(MultipartFile file, HsvColorChange colorChange, Region region) throws IOException {
+
+		MultipartFileUtil.assertFile(file);
+		assertRegion(region);
+		validatorService.assertModel(colorChange);
+
+		Rect rect = MatUtil.regionToRect(region);
+		Mat image = MatUtil.getMat(file.getBytes());
+		
+		MatUtil.colorChange(image.submat(rect), colorChange).copyTo(image.submat(rect));
+		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
+	}
+
 	private void assertSaturation(double alpha) {
 		if (alpha < MIN_SATURATION_ALPHA || alpha > MAX_SATURATION_ALPHA) {
 			throw new BadRequestException(INVALID_SATURARION_ALPHA_MSG);

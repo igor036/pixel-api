@@ -75,4 +75,10 @@ public class ManipulateController {
 			throws IOException {
 		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.colorChange(file, colorChange), response);
 	}
+
+	@GetMapping("color/change/region")
+	public void colorChange(@RequestPart MultipartFile file, HsvColorChange colorChange, Region region, HttpServletResponse response)
+			throws IOException {
+		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.colorChange(file, colorChange, region), response);
+	}
 }
