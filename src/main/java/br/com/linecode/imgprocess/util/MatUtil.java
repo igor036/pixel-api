@@ -398,16 +398,6 @@ public abstract class MatUtil {
 		return new Rect(a, b);
 	}
 
-	private static double[] createHSVPixel(int r, int g, int b) {
-
-		Mat bgrMat = new Mat(1, 1, CvType.CV_8UC3, new Scalar(b, g, r));
-		Mat hsvMat = new Mat(1, 1, CvType.CV_8UC3);
-
-		Imgproc.cvtColor(bgrMat, hsvMat, Imgproc.COLOR_BGR2HSV);
-
-		return hsvMat.get(0, 0);
-	}
-
 	private static void assertRegion(Mat image, Region region) {
 
 		int rectWidth = region.getPointX() + region.getWidth();
