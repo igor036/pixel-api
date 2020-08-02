@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.linecode.imgprocess.model.Dimenssion;
 import br.com.linecode.imgprocess.model.Region;
+import br.com.linecode.imgprocess.model.HsvColorChange;
 import br.com.linecode.imgprocess.util.MatUtil;
 import br.com.linecode.imgprocess.util.MultipartFileUtil;
 import br.com.linecode.shared.excpetion.BadRequestException;
@@ -97,7 +98,7 @@ public class ManipulateService {
 
 		assertSaturation(alpha);
 		MultipartFileUtil.assertFile(file);
-		
+
 		Mat image = MatUtil.getMat(file.getBytes());
 		image = MatUtil.saturation(image, alpha);
 
@@ -142,6 +143,17 @@ public class ManipulateService {
 		MatUtil.contrastAndBrightness(image.submat(rect), alpha, beta)
 			.copyTo(image.submat(rect));
 		//@formatter:on
+
+		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
+	}
+
+	public byte[] colorChange(MultipartFile file, HsvColorChange colorChange) throws IOException {
+
+		MultipartFileUtil.assertFile(file);
+		validatorService.assertModel(colorChange);
+
+		Mat image = MatUtil.getMat(file.getBytes());
+		image = MatUtil.colorChange(image, colorChange);
 
 		return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file));
 	}

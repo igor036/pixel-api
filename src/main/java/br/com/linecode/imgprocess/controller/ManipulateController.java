@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.linecode.imgprocess.model.Dimenssion;
 import br.com.linecode.imgprocess.model.Region;
+import br.com.linecode.imgprocess.model.HsvColorChange;
 import br.com.linecode.imgprocess.service.ManipulateService;
 import br.com.linecode.shared.util.HttpServletResponseUtil;
 
@@ -67,5 +68,11 @@ public class ManipulateController {
 	public void contrastAndBrightness(@RequestPart MultipartFile file, double alpha, double beta, Region region, HttpServletResponse response)
 			throws IOException {
 		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.contrastAndBrightness(file, alpha, beta, region), response);
+	}
+
+	@GetMapping("color/change")
+	public void colorChange(@RequestPart MultipartFile file, HsvColorChange colorChange, HttpServletResponse response)
+			throws IOException {
+		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.colorChange(file, colorChange), response);
 	}
 }
