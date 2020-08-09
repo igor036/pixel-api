@@ -128,4 +128,13 @@ public class ManipulateServiceUnitTest {
             Assert.assertTrue(ex.getMessage().contains(msgError));
         }
     }
+
+    @Test(dataProvider = "sumImageErrorTestDataProvider", dataProviderClass = ManipulateServiceDataProvider.class)
+    public void sumImageErrorTestData(MultipartFile fileA, MultipartFile fileB, String msgError) throws IOException {
+        try {
+            manipulateServiceMock.sumImage(fileA, fileB);
+        } catch(IllegalArgumentException | BadRequestException ex) {
+            Assert.assertTrue(ex.getMessage().contains(msgError));
+        }
+    }
 }

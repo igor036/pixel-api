@@ -336,4 +336,24 @@ public abstract class ManipulateServiceDataProvider {
         };
         //@formatter:on
     }
+
+    @DataProvider(name = "sumImageErrorTestDataProvider")
+    public static Object[][] sumImageErrorTestDataProvider() throws IOException {
+     
+        MultipartFile undefinedFile = null;
+        MultipartFile emptyFile = TEST_UTIL.getEmptyMultiPartFile();
+        MultipartFile mp4File = TEST_UTIL.getMP4MultiPartFile();
+        MultipartFile validFile = TEST_UTIL.getPNGMultiPartFile();
+        
+        //@formatter:off
+        return new Object[][] {
+            {undefinedFile, validFile,  MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {emptyFile, validFile, MultipartFileUtil.EMPTY_FILE_MESSAGE},
+            {mp4File, validFile, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {validFile, undefinedFile,  MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {validFile, emptyFile, MultipartFileUtil.EMPTY_FILE_MESSAGE},
+            {validFile, mp4File, MultipartFileUtil.INVALID_FILE_MESSAGE},
+        };
+        //@formatter:on
+    }
 }
