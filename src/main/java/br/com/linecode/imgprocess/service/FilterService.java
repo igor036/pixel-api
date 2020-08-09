@@ -25,6 +25,8 @@ public class FilterService {
 
     private static final String INVALID_REGION_MSG = "Enter a region of image.";
     private static final String INVALID_ALPHA = "Invalid alpha value, min value should be be 5.";
+    private static final String INVALID_MIN_HUE_VALUE = "Min hue value should be 0 - 179";
+    private static final String INVALID_MAX_HUE_VALUE = "Max hue value should be 0 - 179";
 
     @Autowired
 	private ValidatorService validatorService; 
@@ -135,6 +137,36 @@ public class FilterService {
         return MatUtil.getBlob(blurMold, extension);
     }
 
+    public byte[] grayScaleMagicColor(MultipartFile file, int minHue, int maxHue) throws IOException {
+
+        MultipartFileUtil.assertFile(file);
+        assertHueValueGrayScaleMagicColor(minHue, maxHue);
+
+        Mat image = MatUtil.getMat(file.getBytes());
+        image = MatUtil.grayScaleMagicColor(image, minHue, maxHue);
+
+        return MatUtil.getBlob(image, MultipartFileUtil.getExtension(file)); 
+    }
+
+
+    public byte[] grayScaleMagicColor(MultipartFile file, Region region, int minHue, int maxHue) throws IOException {
+
+        MultipartFileUtil.assertFile(file);
+        assertHueValueGrayScaleMagicColor(minHue, maxHue);
+
+        Rect rect = MatUtil.regionToRect(region);
+        Mat image = MatUtil.getMat(file.getBytes());
+        Mat grayScale = MatUtil.grayScale(image);
+        
+        //@formatter:off
+        MatUtil.grayScaleMagicColor(image.submat(rect), minHue, maxHue)
+            .copyTo(grayScale.submat(rect));
+
+        return MatUtil.getBlob(grayScale, MultipartFileUtil.getExtension(file)); 
+        //@formatter:on
+    }
+
+
     public byte[] rgbMold(MultipartFile file, RgbColor color) throws IOException {
 
         MultipartFileUtil.assertFile(file);
@@ -181,6 +213,15 @@ public class FilterService {
     private void assertBlur(double alpha) {
         if (alpha < 5) {
             throw new BadRequestException(INVALID_ALPHA);
+        }
+    }
+
+    private void assertHueValueGrayScaleMagicColor(int minHue, int maxHue) {
+        if (minHue < 0 || minHue > 179) {
+            throw new BadRequestException(INVALID_MIN_HUE_VALUE);
+        }
+        if (maxHue < 0 || maxHue > 179) {
+            throw new BadRequestException(INVALID_MIN_HUE_VALUE);
         }
     }
 }   

@@ -63,6 +63,16 @@ public class FilterController {
       HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScaleMold(file), response);
     }
 
+    @GetMapping("grayScale/magic-color")
+    public void grayScaleMagicColor(@RequestPart MultipartFile file, int minHue, int maxHue, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScaleMagicColor(file, minHue, maxHue), response);
+    }
+
+    @GetMapping("grayScale/magic-color/region")
+    public void grayScaleMagicColor(@RequestPart MultipartFile file, Region region,  int minHue, int maxHue, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.grayScaleMagicColor(file, region, minHue, maxHue), response);
+    }
+
     @GetMapping("rgb/mold")
     public void rgbMold(@RequestPart MultipartFile file, RgbColor color, HttpServletResponse response)  throws IOException {
       HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.rgbMold(file, color), response);

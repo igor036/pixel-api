@@ -112,6 +112,36 @@ public abstract class MatUtil {
 		return grayScale;
 	}
 
+	/***
+	 * 
+	 * Convert image a grayscale image preserving a color.
+	 * 
+	 * @param image  {@link Mat}
+	 * @param minHue {@link int}
+	 * @param maxHue {@link int}
+	 * @return {@link Mat}
+	 * @throws IOException
+	 */
+	public static Mat grayScaleMagicColor(Mat image, int minHue, int maxHue) throws IOException {
+
+		Mat hsv = new Mat();
+		Mat grayScale = grayScale(image);
+
+		Imgproc.cvtColor(image, hsv, Imgproc.COLOR_BGR2HSV);
+
+		for (int x = 0; x < hsv.rows(); x++) {
+			for (int y = 0; y < hsv.cols(); y++) {
+
+				double[] hsvPixel = hsv.get(x, y);
+				if (hsvPixel[0] >= minHue && hsvPixel[0] <= maxHue) {
+					grayScale.put(x, y, image.get(x, y));
+				}
+			}
+		}
+		
+		return grayScale;
+	}
+
 	/**
 	 * Convert image to a sepia image
 	 * 
