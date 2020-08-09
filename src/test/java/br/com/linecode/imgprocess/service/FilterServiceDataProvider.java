@@ -155,10 +155,10 @@ public abstract class FilterServiceDataProvider {
             {undefinedFile, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
             {emptyFile, 179, 179, MultipartFileUtil.EMPTY_FILE_MESSAGE},
             {mp4File, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
-            {validFile, -10, 179, "Min hue value should be 0 - 179"},
-            {validFile, 255, 179, "Min hue value should be 0 - 179"},
-            {validFile, 179, -10, "Max hue value should be 0 - 179"},
-            {validFile, 179, 255, "Max hue value should be 0 - 179"}
+            {validFile, -10, 179, "Min hue value should be 0 - 560"},
+            {validFile, 700, 179, "Min hue value should be 0 - 560"},
+            {validFile, 179, -10, "Max hue value should be 0 - 560"},
+            {validFile, 179, 700, "Max hue value should be 0 - 560"}
         };
         //@formatter:on
     }
@@ -183,10 +183,10 @@ public abstract class FilterServiceDataProvider {
             {undefinedFile, validRegion, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
             {emptyFile, validRegion, 179, 179, MultipartFileUtil.EMPTY_FILE_MESSAGE},
             {mp4File, validRegion, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
-            {validFile, validRegion, -10, 179, "Min hue value should be 0 - 179"},
-            {validFile, validRegion, 255, 179, "Min hue value should be 0 - 179"},
-            {validFile, validRegion, 179, -10, "Max hue value should be 0 - 179"},
-            {validFile, validRegion, 179, 255, "Max hue value should be 0 - 179"},
+            {validFile, validRegion, -10, 179, "Min hue value should be 0 - 560"},
+            {validFile, validRegion, 700, 179, "Min hue value should be 0 - 560"},
+            {validFile, validRegion, 179, -10, "Max hue value should be 0 - 560"},
+            {validFile, validRegion, 179, 700, "Max hue value should be 0 - 560"},
             {validFile, undefined, 179, 179, INVALID_REGION},
             {validFile, invalidX, 179, 179, INVALID_X},
             {validFile, invalidY, 179, 179, INVALID_Y},

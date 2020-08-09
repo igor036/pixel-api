@@ -25,8 +25,8 @@ public class FilterService {
 
     private static final String INVALID_REGION_MSG = "Enter a region of image.";
     private static final String INVALID_ALPHA = "Invalid alpha value, min value should be be 5.";
-    private static final String INVALID_MIN_HUE_VALUE = "Min hue value should be 0 - 179";
-    private static final String INVALID_MAX_HUE_VALUE = "Max hue value should be 0 - 179";
+    private static final String INVALID_MIN_HUE_VALUE = "Min hue value should be 0 - 560";
+    private static final String INVALID_MAX_HUE_VALUE = "Max hue value should be 0 - 560";
 
     @Autowired
 	private ValidatorService validatorService; 
@@ -218,10 +218,10 @@ public class FilterService {
     }
 
     private void assertHueValueGrayScaleMagicColor(int minHue, int maxHue) {
-        if (minHue < 0 || minHue > 179) {
+        if (minHue < 0 || minHue > 560) {
             throw new BadRequestException(INVALID_MIN_HUE_VALUE);
         }
-        if (maxHue < 0 || maxHue > 179) {
+        if (maxHue < 0 || maxHue > 560) {
             throw new BadRequestException(INVALID_MAX_HUE_VALUE);
         }
     }

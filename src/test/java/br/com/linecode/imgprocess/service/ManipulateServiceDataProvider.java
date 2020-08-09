@@ -28,11 +28,11 @@ public abstract class ManipulateServiceDataProvider {
 
     private static final String ENTER_COLOR_CHANGE_PORPS = "Enter a color change porps.";
     private static final String INVALID_MIN_HUE_SMALLER = "Min value for porp minHue is 0.";
-    private static final String INVALID_MIN_HUE_BIGGER = "Max value for porp minHue is 179.";
+    private static final String INVALID_MIN_HUE_BIGGER = "Max value for porp minHue is 560.";
     private static final String INVALID_MAX_HUE_SMALLER = "Min value for porp maxHue is 0.";
-    private static final String INVALID_MAX_HUE_BIGGER = "Max value for porp maxHue is 179.";
+    private static final String INVALID_MAX_HUE_BIGGER = "Max value for porp maxHue is 560.";
     private static final String INVALID_NEW_HUE_SMALLER = "Min value for porp newHue is 0.";
-    private static final String INVALID_NEW_HUE_BIGGER = "Max value for porp newHue is 179.";
+    private static final String INVALID_NEW_HUE_BIGGER = "Max value for porp newHue is 560.";
 
     @DataProvider(name = "resizeErrorTestDataProvider")
     public static Object[][] resizeErrorTestDataProvider() throws IOException {
@@ -270,9 +270,9 @@ public abstract class ManipulateServiceDataProvider {
         HsvColorChange invalidMinHueSmaller = new HsvColorChange(-179, 179, 179, 0, 0);
         HsvColorChange invalidMaxHueSmaller = new HsvColorChange(179, -179, 179, 0, 0);
         HsvColorChange invalidNewHueSmaller = new HsvColorChange(179, 179, -179, 0, 0);
-        HsvColorChange invalidMinHueBigger = new HsvColorChange(255, 179, 179, 0, 0);
-        HsvColorChange invalidMaxHueBigger = new HsvColorChange(179, 255, 179, 0, 0);
-        HsvColorChange invalidNewHueBigger = new HsvColorChange(179, 179, 255, 0, 0);
+        HsvColorChange invalidMinHueBigger = new HsvColorChange(700, 179, 179, 0, 0);
+        HsvColorChange invalidMaxHueBigger = new HsvColorChange(179, 700, 179, 0, 0);
+        HsvColorChange invalidNewHueBigger = new HsvColorChange(179, 179, 700, 0, 0);
         HsvColorChange validColorChange = new HsvColorChange(179, 179, 179, 0, 0);
 
         //@formatter:off
@@ -303,9 +303,9 @@ public abstract class ManipulateServiceDataProvider {
         HsvColorChange invalidMinHueSmaller = new HsvColorChange(-179, 179, 179, 0, 0);
         HsvColorChange invalidMaxHueSmaller = new HsvColorChange(179, -179, 179, 0, 0);
         HsvColorChange invalidNewHueSmaller = new HsvColorChange(179, 179, -179, 0, 0);
-        HsvColorChange invalidMinHueBigger = new HsvColorChange(255, 179, 179, 0, 0);
-        HsvColorChange invalidMaxHueBigger = new HsvColorChange(179, 255, 179, 0, 0);
-        HsvColorChange invalidNewHueBigger = new HsvColorChange(179, 179, 255, 0, 0);
+        HsvColorChange invalidMinHueBigger = new HsvColorChange(700, 179, 179, 0, 0);
+        HsvColorChange invalidMaxHueBigger = new HsvColorChange(179, 700, 179, 0, 0);
+        HsvColorChange invalidNewHueBigger = new HsvColorChange(179, 179, 700, 0, 0);
         HsvColorChange validColorChange = new HsvColorChange(179, 179, 179, 0, 0);
 
         Region undefinedrRegion = null;
