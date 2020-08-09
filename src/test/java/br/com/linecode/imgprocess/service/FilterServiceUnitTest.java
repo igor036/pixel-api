@@ -127,4 +127,22 @@ public class FilterServiceUnitTest {
             Assert.assertEquals(ex.getMessage(), error);
         }
     }
+
+    @Test(dataProvider = "grayScaleMagicColorErrorTestDataProvider", dataProviderClass = FilterServiceDataProvider.class)
+    public void grayScaleMagicColorErrorTest(MultipartFile file, int minHue, int maxHue, String error) throws IOException {
+        try {
+            filterServiceMock.grayScaleMagicColor(file, minHue, maxHue);
+        } catch(BadRequestException | IllegalArgumentException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
+
+    @Test(dataProvider = "grayScaleMagicColorRegionErrorTestDataProvider", dataProviderClass = FilterServiceDataProvider.class)
+    public void grayScaleMagicColorRegionErrorTest(MultipartFile file, Region region, int minHue, int maxHue, String error) throws IOException {
+        try {
+            filterServiceMock.grayScaleMagicColor(file, region, minHue, maxHue);
+        } catch(BadRequestException | IllegalArgumentException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
 }

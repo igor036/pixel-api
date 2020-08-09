@@ -152,6 +152,7 @@ public class FilterService {
     public byte[] grayScaleMagicColor(MultipartFile file, Region region, int minHue, int maxHue) throws IOException {
 
         MultipartFileUtil.assertFile(file);
+        assertRegion(region);
         assertHueValueGrayScaleMagicColor(minHue, maxHue);
 
         Rect rect = MatUtil.regionToRect(region);
@@ -221,7 +222,7 @@ public class FilterService {
             throw new BadRequestException(INVALID_MIN_HUE_VALUE);
         }
         if (maxHue < 0 || maxHue > 179) {
-            throw new BadRequestException(INVALID_MIN_HUE_VALUE);
+            throw new BadRequestException(INVALID_MAX_HUE_VALUE);
         }
     }
 }   

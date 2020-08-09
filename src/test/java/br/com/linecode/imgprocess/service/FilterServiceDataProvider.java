@@ -141,4 +141,58 @@ public abstract class FilterServiceDataProvider {
         };
         //@formatter:on
     }
+
+    @DataProvider(name = "grayScaleMagicColorErrorTestDataProvider")
+    public static Object[][] grayScaleMagicColorErrorTestDataProvider() throws IOException {
+
+        MultipartFile undefinedFile = null;
+        MultipartFile emptyFile = UTIL.getEmptyMultiPartFile();
+        MultipartFile mp4File = UTIL.getMP4MultiPartFile();
+        MultipartFile validFile = UTIL.getPNGMultiPartFile();
+
+        //@formatter:off
+        return new Object[][] {
+            {undefinedFile, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {emptyFile, 179, 179, MultipartFileUtil.EMPTY_FILE_MESSAGE},
+            {mp4File, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {validFile, -10, 179, "Min hue value should be 0 - 179"},
+            {validFile, 255, 179, "Min hue value should be 0 - 179"},
+            {validFile, 179, -10, "Max hue value should be 0 - 179"},
+            {validFile, 179, 255, "Max hue value should be 0 - 179"}
+        };
+        //@formatter:on
+    }
+
+    @DataProvider(name = "grayScaleMagicColorRegionErrorTestDataProvider")
+    public static Object[][] grayScaleMagicColorRegionErrorTestDataProvider() throws IOException {
+
+        MultipartFile undefinedFile = null;
+        MultipartFile emptyFile = UTIL.getEmptyMultiPartFile();
+        MultipartFile mp4File = UTIL.getMP4MultiPartFile();
+        MultipartFile validFile = UTIL.getPNGMultiPartFile();
+
+        Region undefined = null;
+        Region invalidX = new Region(-1, 20, 20, 20);
+        Region invalidY = new Region(20, -1, 20, 20);
+        Region invaidWidth = new Region(20, 20, 2, 20);
+        Region invalidheight = new Region(20, 20, 20, 2);
+        Region validRegion = new Region(20, 20, 20, 20);
+
+        //@formatter:off
+        return new Object[][] {
+            {undefinedFile, validRegion, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {emptyFile, validRegion, 179, 179, MultipartFileUtil.EMPTY_FILE_MESSAGE},
+            {mp4File, validRegion, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {validFile, validRegion, -10, 179, "Min hue value should be 0 - 179"},
+            {validFile, validRegion, 255, 179, "Min hue value should be 0 - 179"},
+            {validFile, validRegion, 179, -10, "Max hue value should be 0 - 179"},
+            {validFile, validRegion, 179, 255, "Max hue value should be 0 - 179"},
+            {validFile, undefined, 179, 179, INVALID_REGION},
+            {validFile, invalidX, 179, 179, INVALID_X},
+            {validFile, invalidY, 179, 179, INVALID_Y},
+            {validFile, invaidWidth, 179, 179, INVALID_WIDTH},
+            {validFile, invalidheight, 179, 179, INVALID_HEIGHT},
+        };
+        //@formatter:on
+    }
 }
