@@ -71,6 +71,18 @@ public class ManipulateService {
 		}
 	}
 
+	public byte[] sumImage(MultipartFile fileA, MultipartFile fileB) throws IOException {
+
+		MultipartFileUtil.assertFile(fileA);
+		MultipartFileUtil.assertFile(fileB);
+
+		Mat imageA = MatUtil.getMat(fileA.getBytes());
+		Mat imageB = MatUtil.getMat(fileB.getBytes());
+		Mat overlay = MatUtil.overlay(imageA, imageB, false);
+
+		return MatUtil.getBlob(overlay, MultipartFileUtil.getExtension(fileA));
+	}
+
 	public byte[] brightness(MultipartFile file, double alpha) throws IOException {
 
 		assertbrightness(alpha);

@@ -34,6 +34,11 @@ public class ManipulateController {
 		HttpServletResponseUtil.writeNewImageInResponse(file, manipulateService.crop(file, region), response);
 	}
 
+	@GetMapping("sum")
+	public void sumImage(@RequestPart MultipartFile fileA, @RequestPart MultipartFile fileB, HttpServletResponse response) throws IOException {
+		HttpServletResponseUtil.writeNewImageInResponse(fileA, manipulateService.sumImage(fileA, fileB), response);
+	}
+
 	@GetMapping("brightness")
 	public void brightness(@RequestPart MultipartFile file, double alpha, HttpServletResponse response)
 			throws IOException {

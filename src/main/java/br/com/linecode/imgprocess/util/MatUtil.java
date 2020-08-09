@@ -2,6 +2,7 @@ package br.com.linecode.imgprocess.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,55 @@ public abstract class MatUtil {
 	public static Mat crop(Mat image, Region region) throws IOException, IllegalArgumentException {
 		assertRegion(image, region);
 		return image.submat(regionToRect(region));
+	}
+
+	/**
+	 * 
+	 * Into put a widget in a image.
+	 * 
+	 * @param img        {@link Mat}
+	 * @param widget     {@link Mat}
+	 * @param sumHueZero {@link Mat} - define if should be apply overlay in a pixel
+	 *                   with hsv hue value 0
+	 * 
+	 * @return {@link Mat}
+	 */
+	public static Mat overlay(Mat img, Mat widget, boolean sumHueZero) {
+
+		Mat hsvWidget = new Mat();
+		Mat overlayImage = new Mat(img.size(), CvType.CV_8UC3);
+		Imgproc.cvtColor(widget, hsvWidget, Imgproc.COLOR_BGR2HSV);
+
+		for (int x = 0; x < widget.rows(); x++) {
+			for (int y = 0; y < widget.cols(); y++) {
+
+				double[] pixel1 = img.get(x, y);
+				double[] pixel2 = widget.get(x, y);
+
+				if (pixel2.length == 4) {
+
+					// PNG WITH OPACITY
+					double alpha = pixel2[3] / 255f;
+					for (int i = 0; i < 3; i++)
+						pixel1[i] = pixel2[i] * alpha + pixel1[i] * (1 - alpha);
+
+				} else {
+
+					// PHOTO WITHOUT OPACITY
+					if (!Arrays.equals(pixel1, pixel2)) {
+						for (int i = 0; i < 3; i++) {
+							if (hsvWidget.get(x, y)[0] != 0 || sumHueZero) {
+								pixel1[i] = pixel2[i];
+							}
+						}
+					}
+				}
+
+				overlayImage.put(x, y, pixel1);
+			}
+		}
+
+		return overlayImage;
 	}
 
 	/**
@@ -138,7 +188,7 @@ public abstract class MatUtil {
 				}
 			}
 		}
-		
+
 		return grayScale;
 	}
 
