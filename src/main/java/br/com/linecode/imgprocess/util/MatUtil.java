@@ -466,6 +466,40 @@ public abstract class MatUtil {
 		return changedColorImg;
 	}
 
+	/**
+	 * 
+	 * Apply chromakey effect.
+	 * 
+	 * Change all Hue(HSV) value from foreground image by content of backgorund image.
+	 * 
+	 * @param foreground {@link Mat} - image with a background in the color range that you need to change by the content background.
+	 * @param background {@link Mat} - background image.
+	 * @param minHe {@link Integer} - min hue value.
+	 * @param maxHue {@link Integer} - max hue value.
+	 * 
+	 * @return {@link Mat}
+	 */
+	public static Mat chromaKey(Mat foreground, Mat background, int minHe, int maxHue) {
+
+		Mat hsvImage = new Mat(foreground.size(), CvType.CV_8UC3);
+		Mat chromaKeyImage = copy(foreground);
+
+		Imgproc.cvtColor(foreground, hsvImage, Imgproc.COLOR_BGR2HSV);
+		Imgproc.resize(background, background, foreground.size());
+
+		for (int x = 0; x < hsvImage.rows(); x++) {
+			for (int y = 0; y < hsvImage.cols(); y++) {
+
+				double[] hsvPixel = hsvImage.get(x, y);
+				if (hsvPixel[0] >= minHe && hsvPixel[0] <= maxHue) {
+					chromaKeyImage.put(x, y, background.get(x, y));
+				}
+			} 	
+		} 
+
+		return chromaKeyImage;
+	}
+
 	public static Mat copy(Mat image) {
 		Mat copy = new Mat();
 		image.copyTo(copy);

@@ -140,7 +140,7 @@ public class FilterService {
     public byte[] grayScaleMagicColor(MultipartFile file, int minHue, int maxHue) throws IOException {
 
         MultipartFileUtil.assertFile(file);
-        assertHueValueGrayScaleMagicColor(minHue, maxHue);
+        assertHueRange(minHue, maxHue);
 
         Mat image = MatUtil.getMat(file.getBytes());
         image = MatUtil.grayScaleMagicColor(image, minHue, maxHue);
@@ -153,7 +153,7 @@ public class FilterService {
 
         MultipartFileUtil.assertFile(file);
         assertRegion(region);
-        assertHueValueGrayScaleMagicColor(minHue, maxHue);
+        assertHueRange(minHue, maxHue);
 
         Rect rect = MatUtil.regionToRect(region);
         Mat image = MatUtil.getMat(file.getBytes());
@@ -190,6 +190,20 @@ public class FilterService {
 
     }
 
+    public byte[] chromaKey(MultipartFile foreground, MultipartFile background, int minHue, int maxHue)
+            throws IOException {
+
+        MultipartFileUtil.assertFile(foreground);
+        MultipartFileUtil.assertFile(background);
+        assertHueRange(minHue, maxHue);
+
+        Mat foregroundMat = MatUtil.getMat(foreground.getBytes());
+        Mat backgroundMat = MatUtil.getMat(background.getBytes());
+        Mat chromaKey = MatUtil.chromaKey(foregroundMat, backgroundMat, minHue, maxHue);
+
+        return MatUtil.getBlob(chromaKey, MultipartFileUtil.getExtension(foreground));
+    }
+
     public Mat rgbMold(Mat image, RgbColor color) throws IOException {
         
         Mat foreground = MatUtil.copy(image);
@@ -217,7 +231,7 @@ public class FilterService {
         }
     }
 
-    private void assertHueValueGrayScaleMagicColor(int minHue, int maxHue) {
+    private void assertHueRange(int minHue, int maxHue) {
         if (minHue < 0 || minHue > 560) {
             throw new BadRequestException(INVALID_MIN_HUE_VALUE);
         }

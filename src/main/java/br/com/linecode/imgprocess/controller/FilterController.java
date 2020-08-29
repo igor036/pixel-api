@@ -82,4 +82,9 @@ public class FilterController {
     public void rgbMoldPrincipalColor(@RequestPart MultipartFile file, HttpServletResponse response)  throws IOException {
       HttpServletResponseUtil.writeNewImageInResponse(file, filtlerService.rgbMoldPrincipalColor(file), response);
     }
+
+    @GetMapping("chromaKey")
+    public void chromaKey(@RequestPart MultipartFile foreground, @RequestPart MultipartFile background, int minHue, int maxHue, HttpServletResponse response)  throws IOException {
+      HttpServletResponseUtil.writeNewImageInResponse(foreground, filtlerService.chromaKey(foreground, background, minHue, maxHue), response);
+    }
 }
