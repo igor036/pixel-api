@@ -145,4 +145,14 @@ public class FilterServiceUnitTest {
             Assert.assertEquals(ex.getMessage(), error);
         }
     }
+
+    @Test(dataProvider = "chromaKeyErrorTestDataProvider", dataProviderClass = FilterServiceDataProvider.class)
+    public void chromaKeyErrorTest(MultipartFile foreground, MultipartFile background, int minHue, int maxHue, String error)
+            throws IOException {
+        try {
+            filterServiceMock.chromaKey(foreground, background, minHue, maxHue);
+        } catch(BadRequestException | IllegalArgumentException ex) {
+            Assert.assertEquals(ex.getMessage(), error);
+        }
+    }
 }

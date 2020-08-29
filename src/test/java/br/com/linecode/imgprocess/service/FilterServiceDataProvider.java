@@ -195,4 +195,29 @@ public abstract class FilterServiceDataProvider {
         };
         //@formatter:on
     }
+
+    @DataProvider(name = "chromaKeyErrorTestDataProvider")
+    public static Object[][] chromaKeyErrorTestDataProvider() throws IOException {
+
+        MultipartFile undefinedFile = null;
+        MultipartFile emptyFile = UTIL.getEmptyMultiPartFile();
+        MultipartFile mp4File = UTIL.getMP4MultiPartFile();
+        MultipartFile validFile = UTIL.getPNGMultiPartFile();
+
+        //@formatter:off
+        return new Object[][] {
+            {undefinedFile, validFile, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {emptyFile, validFile, 179, 179, MultipartFileUtil.EMPTY_FILE_MESSAGE},
+            {mp4File, validFile, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {validFile, undefinedFile, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {validFile, emptyFile, 179, 179, MultipartFileUtil.EMPTY_FILE_MESSAGE},
+            {validFile, mp4File, 179, 179, MultipartFileUtil.INVALID_FILE_MESSAGE},
+            {validFile, validFile, -10, 179, "Min hue value should be 0 - 560"},
+            {validFile, validFile, 1000, 179, "Min hue value should be 0 - 560"},
+
+            {validFile, validFile, 179, -10, "Max hue value should be 0 - 560"},
+            {validFile, validFile, 179, 1000, "Max hue value should be 0 - 560"},
+        };
+        //@formatter:on
+    }
 }
